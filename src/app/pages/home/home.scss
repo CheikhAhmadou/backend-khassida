@@ -1,0 +1,114 @@
+// Palette unifiée parchemin mouride
+$bg-deep:    #1a1206;
+$bg-mid:     #231808;
+$bg-light:   #2e2010;
+$gold:       #c8a030;
+$gold-dim:   rgba(200, 160, 48, 0.5);
+$gold-faint: rgba(200, 160, 48, 0.15);
+$cream:      #f5e8c0;
+$border:     rgba(200, 160, 48, 0.18);
+$text-muted: rgba(245, 220, 160, 0.4);
+
+.shell {
+  background: $bg-deep;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  overflow: hidden;
+}
+
+.topnav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 52px;
+  background: $bg-mid;
+  border-bottom: 1px solid $border;
+  flex-shrink: 0;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.3);
+}
+
+.nav-brand { display: flex; align-items: center; gap: 10px; }
+
+.nav-logo {
+  width: 28px; height: 28px;
+  background: $gold;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 8px rgba(200,160,48,0.35);
+  svg { width: 16px; height: 16px; }
+}
+
+.nav-title { font-size: 14px; font-weight: 600; color: $gold; letter-spacing: 0.05em; }
+.nav-sub   { font-size: 10px; color: $gold-dim; margin-top: 1px; }
+
+.nav-links { display: flex; gap: 4px; }
+
+.nav-link {
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: $text-muted;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: none;
+  background: transparent;
+
+  &.active { color: $gold; background: $gold-faint; border: 0.5px solid $border; }
+  &:hover:not(.active) { color: $cream; background: rgba(255,255,255,0.04); }
+}
+
+.nav-actions { display: flex; gap: 10px; align-items: center; }
+
+.nav-badge {
+  font-size: 11px;
+  padding: 3px 10px;
+  border: 0.5px solid $border;
+  border-radius: 20px;
+  color: $gold;
+  background: $gold-faint;
+}
+
+.nav-sync-badge {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: rgba(80, 200, 120, 0.12);
+  border: 0.5px solid rgba(80, 200, 120, 0.35);
+  color: #6ed49a;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+.nav-btn-admin {
+  font-size: 11px;
+  padding: 5px 12px;
+  border-radius: 6px;
+  background: $gold-faint;
+  border: 0.5px solid rgba(200, 160, 48, 0.35);
+  color: $gold;
+  text-decoration: none;
+  transition: all 0.15s;
+
+  &:hover { background: rgba(200,160,48,0.25); box-shadow: 0 0 8px rgba(200,160,48,0.2); }
+}
+
+.layout { display: flex; flex: 1; overflow: hidden; }
+
+.main { flex: 1; position: relative; overflow: hidden; }
+
+.loading {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 14px;
+  color: $gold-dim;
+  font-size: 13px;
+  background: radial-gradient(ellipse at center, #2a1c08 0%, $bg-deep 100%);
+  svg { animation: spin 3s linear infinite; }
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }

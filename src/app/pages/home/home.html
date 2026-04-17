@@ -1,0 +1,66 @@
+<div class="shell">
+
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <div class="nav-brand">
+      <div class="nav-logo">
+        <svg viewBox="0 0 16 16" fill="none">
+          <polygon points="8,1 15,4 15,12 8,15 1,12 1,4" stroke="#0d0d14" stroke-width="0.5" fill="#c8a030"/>
+          <text x="8" y="11" text-anchor="middle" font-size="7" fill="#0d0d14" font-weight="700">ك</text>
+        </svg>
+      </div>
+      <div>
+        <div class="nav-title">Khassida Projection</div>
+        <div class="nav-sub">Diaporama grand écran</div>
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <button class="nav-link active">Diaporama</button>
+      <button class="nav-link">Bibliothèque</button>
+    </div>
+
+    <div class="nav-actions">
+      @if (newSlidesCount() > 0) {
+        <span class="nav-sync-badge">
+          +{{ newSlidesCount() }} nouvelle(s) image(s)
+        </span>
+      }
+      <span class="nav-badge">{{ slides().length }} images</span>
+      <a routerLink="/admin" class="nav-btn-admin">Admin</a>
+    </div>
+  </nav>
+
+  <!-- LAYOUT -->
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <app-sidebar
+      [collections]="collections()"
+      [slides]="slides()"
+      [currentIndex]="currentIndex()"
+      [activeCollectionId]="activeCollectionId()"
+      (collectionSelect)="onCollectionSelect($event)"
+      (slideSelect)="onSlideSelect($event)"
+    />
+
+    <!-- STAGE -->
+    <main class="main">
+      @if (loading()) {
+        <div class="loading">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <polygon points="20,3 37,11 37,29 20,37 3,29 3,11" stroke="#c8a030" stroke-width="1" fill="none" opacity="0.6"/>
+          </svg>
+          <span>Chargement…</span>
+        </div>
+      } @else {
+        <app-slideshow
+          [slides]="slides()"
+          [intervalMs]="5000"
+          (indexChange)="onIndexChange($event)"
+        />
+      }
+    </main>
+
+  </div>
+</div>

@@ -26,6 +26,22 @@ export class SlideshowComponent implements OnInit, OnDestroy {
   @Input() intervalMs = 5000;
   @Output() indexChange = new EventEmitter<number>();
 
+  private readonly speedOptions = [3000, 5000, 8000, 10000, 15000, 30000];
+  intervalMs_signal = signal(5000);
+
+  cycleSpeed(): void {
+    const idx = this.speedOptions.indexOf(this.intervalMs_signal());
+    const next = this.speedOptions[(idx + 1) % this.speedOptions.length];
+    this.intervalMs_signal.set(next);
+    this.intervalMs = next;
+    this.restartAutoplay();
+  }
+
+  speedLabel = computed(() => {
+    const s = this.intervalMs_signal() / 1000;
+    return s < 60 ? `${s}s` : `${s / 60}m`;
+  });
+
   api = inject(ApiService);
   private el = inject(ElementRef);
 

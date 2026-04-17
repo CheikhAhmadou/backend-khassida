@@ -277,6 +277,11 @@
     </div>
   }
 
+  <!-- Titre collection -->
+  @if (current()) {
+    <div class="slide-title">{{ current()!.collection?.name ?? '' }}</div>
+  }
+
   <!-- Barre de progression -->
   <div class="progress-bar">
     <div class="progress-fill" [style.width.%]="progress()"></div>
@@ -322,7 +327,7 @@
     </div>
 
     <span class="ctrl-counter">{{ currentIndex() + 1 }} / {{ total() }}</span>
-    <span class="ctrl-speed">{{ intervalMs / 1000 }}s</span>
+    <button class="ctrl-speed" (click)="cycleSpeed()" title="Changer la vitesse">{{ speedLabel() }}</button>
 
     <button class="ctrl-btn" (click)="toggleFullscreen()" [title]="isFullscreen() ? 'Quitter plein écran (F)' : 'Plein écran (F)'">
       @if (isFullscreen()) {

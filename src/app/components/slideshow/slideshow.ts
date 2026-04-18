@@ -1,6 +1,6 @@
 import {
-  Component, OnInit, OnDestroy, Input, Output, EventEmitter,
-  signal, computed, inject, ChangeDetectionStrategy, HostListener, ElementRef,
+  Component, OnInit, OnDestroy, AfterViewInit, Input, Output, EventEmitter,
+  signal, computed, inject, ChangeDetectionStrategy, HostListener, ElementRef, NgZone,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Khassida } from '../../models/collection.model';
@@ -16,7 +16,7 @@ export type TransitionType = 'fade-zoom' | 'slide-up' | 'slide-right' | 'dissolv
   templateUrl: './slideshow.html',
   styleUrl: './slideshow.scss',
 })
-export class SlideshowComponent implements OnInit, OnDestroy {
+export class SlideshowComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() set slides(val: Khassida[]) {
     this._slides.set(val);
     this.currentIndex.set(0);
@@ -42,8 +42,9 @@ export class SlideshowComponent implements OnInit, OnDestroy {
     return s < 60 ? `${s}s` : `${s / 60}m`;
   });
 
-  api = inject(ApiService);
-  private el = inject(ElementRef);
+  api    = inject(ApiService);
+  private el   = inject(ElementRef);
+  private zone = inject(NgZone);
 
   _slides    = signal<Khassida[]>([]);
   isFullscreen = signal(false);
@@ -62,12 +63,55 @@ export class SlideshowComponent implements OnInit, OnDestroy {
   previous = computed(() => this.prevIndex() !== null ? (this._slides()[this.prevIndex()!] ?? null) : null);
   total    = computed(() => this._slides().length);
 
+  isSleeping = signal(false);
+  chapeletCount = computed(() => Math.min(this.total(), 30));
+
   private timer: ReturnType<typeof setInterval> | null = null;
   private progressTimer: ReturnType<typeof setInterval> | null = null;
+  private sleepTimer: ReturnType<typeof setTimeout> | null = null;
+  private particleInterval: ReturnType<typeof setInterval> | null = null;
   private startedAt = 0;
+  private readonly SLEEP_MS = 30000;
 
   ngOnInit(): void { this.restartAutoplay(); }
-  ngOnDestroy(): void { this.clearTimers(); }
+
+  ngAfterViewInit(): void {
+    this.zone.runOutsideAngular(() => {
+      // Lancer 20 particules initiales
+      for (let i = 0; i < 20; i++) {
+        setTimeout(() => this.spawnParticle(), i * 350);
+      }
+      this.particleInterval = setInterval(() => this.spawnParticle(), 1800);
+    });
+    this.resetSleep();
+  }
+
+  ngOnDestroy(): void {
+    this.clearTimers();
+    if (this.sleepTimer) clearTimeout(this.sleepTimer);
+    if (this.particleInterval) clearInterval(this.particleInterval);
+  }
+
+  resetSleep(): void {
+    if (this.sleepTimer) clearTimeout(this.sleepTimer);
+    this.isSleeping.set(false);
+    this.sleepTimer = setTimeout(() => this.zone.run(() => this.isSleeping.set(true)), this.SLEEP_MS);
+  }
+
+  private spawnParticle(): void {
+    const container = this.el.nativeElement.querySelector('.particles');
+    if (!container) return;
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const dur  = 7 + Math.random() * 9;
+    const dx   = (Math.random() - 0.5) * 70;
+    const size = 0.8 + Math.random() * 1.8;
+    p.style.cssText = `left:${8 + Math.random() * 84}%;bottom:${Math.random() * 70}%;--dx:${dx}px;animation-duration:${dur}s;animation-delay:${Math.random() * 2}s;width:${size}px;height:${size}px;`;
+    container.appendChild(p);
+    setTimeout(() => p.remove(), (dur + 4) * 1000);
+  }
+
+  @HostListener('mousemove') @HostListener('click') onActivity(): void { this.resetSleep(); }
 
   restartAutoplay(): void {
     this.clearTimers();

@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8090/api',
+  apiUrl: 'https://backend-khassida-production.up.railway.app/api',
 };

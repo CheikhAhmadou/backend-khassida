@@ -1,5 +1,25 @@
 <div class="stage">
 
+  <!-- Géométrie islamique rotative (slow spin 90s) -->
+  <div class="geom-rotate-wrap">
+    <svg class="geom-rotate" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#b8902a" fill="none">
+        <polygon points="300,18 562,159 562,441 300,582 38,441 38,159" stroke-width="0.7" opacity="0.18"/>
+        <polygon points="300,65 525,190 525,410 300,535 75,410 75,190" stroke-width="0.5" opacity="0.13"/>
+        <circle cx="300" cy="300" r="262" stroke-width="0.6" opacity="0.15"/>
+        <circle cx="300" cy="300" r="200" stroke-width="0.5" opacity="0.12"/>
+        <circle cx="300" cy="300" r="142" stroke-width="0.4" opacity="0.11"/>
+        <polygon points="300,38 562,300 300,562 38,300" stroke-width="0.6" opacity="0.14"/>
+        <polygon points="300,110 490,300 300,490 110,300" stroke-width="0.4" opacity="0.11"/>
+        <line x1="38" y1="159" x2="562" y2="441" stroke-width="0.3" opacity="0.1"/>
+        <line x1="562" y1="159" x2="38" y2="441" stroke-width="0.3" opacity="0.1"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Particules dorées flottantes -->
+  <div class="particles"></div>
+
   <!-- ══════════════════════════════════════════
        DÉCOR RELIGIEUX MOURIDE — SVG PRINCIPAL
   ══════════════════════════════════════════ -->
@@ -285,6 +305,25 @@
   <!-- Barre de progression -->
   <div class="progress-bar">
     <div class="progress-fill" [style.width.%]="progress()"></div>
+  </div>
+
+  <!-- Chapelet navigation -->
+  <div class="chapelet">
+    @for (item of _slides(); track item.id; let i = $index) {
+      @if (i < chapeletCount()) {
+        @if (i > 0) { <div class="bead-sep"></div> }
+        <div class="bead"
+          [class.on]="i === currentIndex()"
+          [class.done]="i < currentIndex()"
+          (click)="goTo(i)">
+        </div>
+      }
+    }
+  </div>
+
+  <!-- Overlay mode veille après 30s sans interaction -->
+  <div class="sleep-overlay" [class.on]="isSleeping()">
+    <div class="sleep-txt">بِسْمِ اللَّهِ</div>
   </div>
 
   <!-- Contrôles -->

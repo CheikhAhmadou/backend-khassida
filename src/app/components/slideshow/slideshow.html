@@ -20,6 +20,69 @@
   <!-- Particules dorées flottantes -->
   <div class="particles"></div>
 
+  <!-- Verset de Cheikh Ahmadou Bamba — fond rotatif -->
+  <div class="ambient-verse" [class.visible]="verseVisible()">
+    <div class="ambient-verse-ar">{{ verses[currentVerse()].ar }}</div>
+    <div class="ambient-verse-fr">{{ verses[currentVerse()].fr }}</div>
+  </div>
+
+  <!-- Croissant + étoile animé haut-droite -->
+  <div class="crescent-badge">
+    <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+      <!-- Croissant -->
+      <path d="M26,6 A20,20 0 1,1 26,46 A14,14 0 1,0 26,6 Z" fill="#b8902a" opacity="0.5"/>
+      <!-- Étoile 5 branches -->
+      <polygon transform="translate(36,14)"
+        points="0,-8 1.9,-2.6 7.6,-2.6 3.1,1 4.7,6.6 0,3.1 -4.7,6.6 -3.1,1 -7.6,-2.6 -1.9,-2.6"
+        fill="#b8902a" opacity="0.6"/>
+    </svg>
+  </div>
+
+  <!-- Ornements coins Mouride -->
+  <div class="mouride-corner mouride-corner-tl">
+    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+      <polygon points="30,2 35,14 48,14 38,22 42,35 30,27 18,35 22,22 12,14 25,14"
+        fill="#b8902a" opacity="0.22"/>
+      <line x1="2" y1="2" x2="58" y2="2" stroke="#b8902a" stroke-width="0.6" opacity="0.3"/>
+      <line x1="2" y1="2" x2="2" y2="58" stroke="#b8902a" stroke-width="0.6" opacity="0.3"/>
+      <line x1="6" y1="6" x2="40" y2="6" stroke="#b8902a" stroke-width="0.4" opacity="0.18"/>
+      <line x1="6" y1="6" x2="6" y2="40" stroke="#b8902a" stroke-width="0.4" opacity="0.18"/>
+    </svg>
+  </div>
+  <div class="mouride-corner mouride-corner-tr">
+    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+      <polygon points="30,2 35,14 48,14 38,22 42,35 30,27 18,35 22,22 12,14 25,14"
+        fill="#b8902a" opacity="0.22"/>
+      <line x1="2" y1="2" x2="58" y2="2" stroke="#b8902a" stroke-width="0.6" opacity="0.3"/>
+      <line x1="58" y1="2" x2="58" y2="58" stroke="#b8902a" stroke-width="0.6" opacity="0.3"/>
+      <line x1="20" y1="6" x2="54" y2="6" stroke="#b8902a" stroke-width="0.4" opacity="0.18"/>
+      <line x1="54" y1="6" x2="54" y2="40" stroke="#b8902a" stroke-width="0.4" opacity="0.18"/>
+    </svg>
+  </div>
+  <div class="mouride-corner mouride-corner-bl">
+    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+      <polygon points="30,58 35,46 48,46 38,38 42,25 30,33 18,25 22,38 12,46 25,46"
+        fill="#b8902a" opacity="0.22"/>
+      <line x1="2" y1="58" x2="58" y2="58" stroke="#b8902a" stroke-width="0.6" opacity="0.3"/>
+      <line x1="2" y1="2" x2="2" y2="58" stroke="#b8902a" stroke-width="0.6" opacity="0.3"/>
+    </svg>
+  </div>
+  <div class="mouride-corner mouride-corner-br">
+    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+      <polygon points="30,58 35,46 48,46 38,38 42,25 30,33 18,25 22,38 12,46 25,46"
+        fill="#b8902a" opacity="0.22"/>
+      <line x1="2" y1="58" x2="58" y2="58" stroke="#b8902a" stroke-width="0.6" opacity="0.3"/>
+      <line x1="58" y1="2" x2="58" y2="58" stroke="#b8902a" stroke-width="0.6" opacity="0.3"/>
+    </svg>
+  </div>
+
+  <!-- Signature Khadimou Rassoul bas-gauche -->
+  <div class="khadim-badge">
+    <span class="khadim-ar">خَادِمُ الرَّسُولِ</span>
+    <span class="khadim-dot">✦</span>
+    <span class="khadim-fr">Cheikh Ahmadou Bamba</span>
+  </div>
+
   <!-- ══════════════════════════════════════════
        DÉCOR RELIGIEUX MOURIDE — SVG PRINCIPAL
   ══════════════════════════════════════════ -->

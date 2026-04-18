@@ -63,13 +63,26 @@ export class SlideshowComponent implements OnInit, AfterViewInit, OnDestroy {
   previous = computed(() => this.prevIndex() !== null ? (this._slides()[this.prevIndex()!] ?? null) : null);
   total    = computed(() => this._slides().length);
 
-  isSleeping = signal(false);
+  isSleeping    = signal(false);
   chapeletCount = computed(() => Math.min(this.total(), 30));
+  currentVerse  = signal(0);
+  verseVisible  = signal(true);
+
+  readonly verses = [
+    { ar: 'إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ', fr: 'Les actes ne valent que par les intentions' },
+    { ar: 'مَنْ عَرَفَ اللَّهَ طَالَ تَعَجُّبُهُ', fr: 'Celui qui connaît Dieu ne cesse de s\'émerveiller' },
+    { ar: 'العِلْمُ نُورٌ يَهْدِي مَنْ يَشَاءُ اللَّهُ', fr: 'La science est une lumière que Dieu guide vers qui Il veut' },
+    { ar: 'تَوَكَّلْ عَلَى اللَّهِ وَاصْبِرْ', fr: 'Mets ta confiance en Dieu et sois patient' },
+    { ar: 'خَادِمُ الرَّسُولِ نَجَّانَا', fr: 'Le Serviteur du Prophète nous a sauvés' },
+    { ar: 'مَدَدْتُ يَدِي إِلَى اللَّهِ تَعَالَى', fr: 'J\'ai tendu ma main vers Dieu le Très-Haut' },
+    { ar: 'يَا إِلَهِي أَنْتَ مَقْصُودِي', fr: 'Ô mon Dieu, Tu es mon seul but' },
+  ];
 
   private timer: ReturnType<typeof setInterval> | null = null;
   private progressTimer: ReturnType<typeof setInterval> | null = null;
   private sleepTimer: ReturnType<typeof setTimeout> | null = null;
   private particleInterval: ReturnType<typeof setInterval> | null = null;
+  private verseTimer: ReturnType<typeof setInterval> | null = null;
   private startedAt = 0;
   private readonly SLEEP_MS = 30000;
 
@@ -77,19 +90,27 @@ export class SlideshowComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
-      // Lancer 20 particules initiales
-      for (let i = 0; i < 20; i++) {
-        setTimeout(() => this.spawnParticle(), i * 350);
-      }
+      for (let i = 0; i < 20; i++) setTimeout(() => this.spawnParticle(), i * 350);
       this.particleInterval = setInterval(() => this.spawnParticle(), 1800);
     });
+    // Rotation des versets toutes les 12s
+    this.verseTimer = setInterval(() => {
+      this.zone.run(() => {
+        this.verseVisible.set(false);
+        setTimeout(() => {
+          this.currentVerse.update(v => (v + 1) % this.verses.length);
+          this.verseVisible.set(true);
+        }, 1000);
+      });
+    }, 12000);
     this.resetSleep();
   }
 
   ngOnDestroy(): void {
     this.clearTimers();
-    if (this.sleepTimer) clearTimeout(this.sleepTimer);
+    if (this.sleepTimer)   clearTimeout(this.sleepTimer);
     if (this.particleInterval) clearInterval(this.particleInterval);
+    if (this.verseTimer)   clearInterval(this.verseTimer);
   }
 
   resetSleep(): void {

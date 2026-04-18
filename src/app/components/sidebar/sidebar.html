@@ -1,5 +1,19 @@
 <aside class="sidebar">
 
+  <!-- En-tête décoratif Mouride -->
+  <div class="sidebar-header">
+    <div class="sidebar-header-ornament">
+      <div class="orn-line"></div>
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <polygon points="7,0.5 8.6,4.8 13.2,4.8 9.6,7.5 11,11.8 7,9.2 3,11.8 4.4,7.5 0.8,4.8 5.4,4.8"
+          fill="#c8a030" opacity="0.7"/>
+      </svg>
+      <div class="orn-line"></div>
+    </div>
+    <div class="sidebar-header-title">الخَصَائِدُ المُرِيدِيَّة</div>
+    <div class="sidebar-header-sub">Khassidas Mourides</div>
+  </div>
+
   <!-- Collections -->
   <div class="section">
     <div class="section-label">Collections</div>
@@ -15,7 +29,7 @@
     @for (col of sortedCollections; track col.id) {
       <button class="item" [class.active]="activeCollectionId === col.id" (click)="collectionSelect.emit(col.id)">
         <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3">
-          <path d="M2 7h10M7 2v10"/>
+          <polygon points="7,1 13,4 13,10 7,13 1,10 1,4"/>
         </svg>
         <span>{{ col.name }}</span>
         @if (col.khassidas_count) {
@@ -29,9 +43,8 @@
   <div class="section stats">
     <div class="section-label">Statistiques</div>
     <div class="stat-card">
-      <div class="stat-label">Total</div>
+      <div class="stat-label">Total images</div>
       <div class="stat-val gold">{{ slides.length }}</div>
-      <div class="stat-sub">images</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">Collections</div>
@@ -57,21 +70,60 @@
     </div>
   }
 
-  <!-- Footer -->
+  <!-- Footer : Mosquée de Touba + citation -->
   <div class="footer">
-    <div class="section-label">Fond actif</div>
-    <div class="bg-card">
-      <div class="bg-preview">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <polygon points="12,2 22,7 22,17 12,22 2,17 2,7" stroke="#c8a030" stroke-width="0.8" fill="none"/>
-          <circle cx="12" cy="12" r="4" stroke="#c8a030" stroke-width="0.6" fill="none"/>
-        </svg>
-      </div>
-      <div class="bg-info">
-        <div class="bg-name">Nuit muride</div>
-        <div class="bg-sub">1920 × 1080</div>
+
+    <!-- Citation Cheikh Ahmadou Bamba -->
+    <div class="quote-block">
+      <div class="quote-ar">مَنْ أَرَادَ السَّعَادَةَ فَعَلَيْهِ بِالعِلْمِ</div>
+      <div class="quote-fr">« Celui qui veut le bonheur doit s'attacher à la science »</div>
+      <div class="quote-author">— Cheikh Ahmadou Bamba</div>
+    </div>
+
+    <!-- Mosquée de Touba miniature -->
+    <div class="touba-card">
+      <svg class="touba-mosque" viewBox="0 0 220 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Dôme central -->
+        <ellipse cx="110" cy="42" rx="38" ry="33" fill="#c8a030" opacity="0.15"/>
+        <ellipse cx="110" cy="42" rx="35" ry="30" fill="none" stroke="#c8a030" stroke-width="0.8" opacity="0.5"/>
+        <rect x="72" y="42" width="76" height="35" fill="#c8a030" opacity="0.1"/>
+        <rect x="72" y="42" width="76" height="35" fill="none" stroke="#c8a030" stroke-width="0.6" opacity="0.4"/>
+        <!-- Dômes secondaires -->
+        <ellipse cx="46" cy="63" rx="20" ry="16" fill="#c8a030" opacity="0.1"/>
+        <rect x="26" y="63" width="40" height="14" fill="#c8a030" opacity="0.08"/>
+        <ellipse cx="174" cy="63" rx="20" ry="16" fill="#c8a030" opacity="0.1"/>
+        <rect x="154" y="63" width="40" height="14" fill="#c8a030" opacity="0.08"/>
+        <!-- Façade -->
+        <rect x="26" y="77" width="168" height="30" fill="#c8a030" opacity="0.07"/>
+        <rect x="26" y="77" width="168" height="30" fill="none" stroke="#c8a030" stroke-width="0.6" opacity="0.3"/>
+        <!-- Porte arche -->
+        <path d="M98,107 L98,89 Q98,80 110,80 Q122,80 122,89 L122,107 Z" fill="#c8a030" opacity="0.15"/>
+        <!-- Minaret central -->
+        <rect x="105" y="9" width="10" height="33" fill="#c8a030" opacity="0.25"/>
+        <rect x="103" y="7" width="14" height="4" fill="#c8a030" opacity="0.35" rx="1"/>
+        <rect x="106" y="2" width="8" height="8" fill="#c8a030" opacity="0.2"/>
+        <polygon points="110,0 106,4 114,4" fill="#c8a030" opacity="0.6"/>
+        <!-- Croissant -->
+        <path d="M107.5,1 A2.5,2.5 0 1,1 112.5,1 A1.8,1.8 0 1,0 107.5,1 Z" fill="#c8a030" opacity="0.7"/>
+        <!-- Minarets secondaires -->
+        <rect x="64" y="50" width="7" height="27" fill="#c8a030" opacity="0.2"/>
+        <polygon points="67.5,46 64,50 71,50" fill="#c8a030" opacity="0.4"/>
+        <rect x="149" y="50" width="7" height="27" fill="#c8a030" opacity="0.2"/>
+        <polygon points="152.5,46 149,50 156,50" fill="#c8a030" opacity="0.4"/>
+        <!-- Étoiles 5 branches coins -->
+        <polygon transform="translate(20,18)"
+          points="0,-7 1.6,-2.3 6.6,-2.3 2.7,0.9 4.3,5.7 0,2.7 -4.3,5.7 -2.7,0.9 -6.6,-2.3 -1.6,-2.3"
+          fill="#c8a030" opacity="0.25"/>
+        <polygon transform="translate(200,18)"
+          points="0,-7 1.6,-2.3 6.6,-2.3 2.7,0.9 4.3,5.7 0,2.7 -4.3,5.7 -2.7,0.9 -6.6,-2.3 -1.6,-2.3"
+          fill="#c8a030" opacity="0.25"/>
+      </svg>
+      <div class="touba-label">
+        <span class="touba-ar">طُوبَى</span>
+        <span class="touba-fr">Touba — Sénégal</span>
       </div>
     </div>
+
   </div>
 
 </aside>

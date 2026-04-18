@@ -10,10 +10,14 @@ import { Collection, Khassida } from '../../models/collection.model';
   styleUrl: './sidebar.scss',
 })
 export class SidebarComponent {
-  @Input() collections: Collection[] = [];
+  @Input() set collections(val: Collection[]) {
+    this.sortedCollections = [...val].sort((a, b) => a.name.localeCompare(b.name, 'fr'));
+  }
   @Input() slides: Khassida[] = [];
   @Input() currentIndex = 0;
   @Input() activeCollectionId: number | null = null;
   @Output() collectionSelect = new EventEmitter<number | null>();
   @Output() slideSelect = new EventEmitter<number>();
+
+  sortedCollections: Collection[] = [];
 }

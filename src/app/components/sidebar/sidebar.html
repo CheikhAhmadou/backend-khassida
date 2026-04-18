@@ -12,7 +12,7 @@
       <span class="badge">{{ slides.length }}</span>
     </button>
 
-    @for (col of collections; track col.id) {
+    @for (col of sortedCollections; track col.id) {
       <button class="item" [class.active]="activeCollectionId === col.id" (click)="collectionSelect.emit(col.id)">
         <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3">
           <path d="M2 7h10M7 2v10"/>
@@ -35,7 +35,7 @@
     </div>
     <div class="stat-card">
       <div class="stat-label">Collections</div>
-      <div class="stat-val">{{ collections.length }}</div>
+      <div class="stat-val">{{ sortedCollections.length }}</div>
     </div>
   </div>
 

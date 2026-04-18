@@ -22,19 +22,27 @@
 
   <!-- Croissant + étoile animé haut-droite -->
   <div class="crescent-badge">
-    <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
-      <!-- Halo lumineux -->
-      <circle cx="38" cy="45" r="30" fill="#c8a030" opacity="0.08"/>
-      <!-- Croissant -->
-      <path d="M38,12 A33,33 0 1,1 38,78 A23,23 0 1,0 38,12 Z" fill="#f0c840" opacity="0.95"/>
-      <!-- Lueur intérieure -->
-      <path d="M38,18 A27,27 0 1,1 38,72 A19,19 0 1,0 38,18 Z" fill="#ffe070" opacity="0.25"/>
-      <!-- Étoile 5 branches -->
-      <polygon transform="translate(66,22)"
-        points="0,-12 2.8,-3.9 11.4,-3.9 4.6,1.5 7.3,10 0,4.6 -7.3,10 -4.6,1.5 -11.4,-3.9 -2.8,-3.9"
-        fill="#f5d040" opacity="0.98"/>
-      <!-- Lueur étoile -->
-      <circle cx="66" cy="22" r="8" fill="#f0c840" opacity="0.15"/>
+    <svg width="110" height="110" viewBox="0 0 110 110" fill="none">
+      <!-- Halo externe -->
+      <circle cx="45" cy="55" r="42" fill="#c8a030" opacity="0.18"/>
+      <circle cx="45" cy="55" r="34" fill="#c8a030" opacity="0.12"/>
+      <!-- Croissant plein -->
+      <path d="M45,14 A41,41 0 1,1 45,96 A28,28 0 1,0 45,14 Z" fill="#f5c800"/>
+      <!-- Reflet brillant sur croissant -->
+      <path d="M45,18 A36,36 0 1,1 45,92 A24,24 0 1,0 45,18 Z" fill="#ffe84d" opacity="0.35"/>
+      <!-- Contour lumineux -->
+      <path d="M45,14 A41,41 0 1,1 45,96 A28,28 0 1,0 45,14 Z"
+        fill="none" stroke="#fff8c0" stroke-width="1.5" opacity="0.6"/>
+      <!-- Halo étoile -->
+      <circle cx="82" cy="26" r="13" fill="#f5c800" opacity="0.25"/>
+      <!-- Étoile 5 branches grande -->
+      <polygon transform="translate(82,26)"
+        points="0,-14 3.3,-4.6 13.3,-4.6 5.4,1.7 8.6,11.7 0,5.4 -8.6,11.7 -5.4,1.7 -13.3,-4.6 -3.3,-4.6"
+        fill="#f5c800"/>
+      <!-- Reflet étoile -->
+      <polygon transform="translate(82,26)"
+        points="0,-14 3.3,-4.6 13.3,-4.6 5.4,1.7 8.6,11.7 0,5.4 -8.6,11.7 -5.4,1.7 -13.3,-4.6 -3.3,-4.6"
+        fill="#fff8c0" opacity="0.4"/>
     </svg>
   </div>
 

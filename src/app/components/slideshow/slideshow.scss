@@ -653,6 +653,52 @@
   to   { color: #f0d060; text-shadow: 0 0 16px rgba(240,210,60,0.7); }
 }
 
+/* ── SIGNATURE ── */
+.signature {
+  position: absolute;
+  bottom: 126px;
+  left: 33%;
+  transform: translateX(-50%);
+  z-index: 9;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: sig-appear 2s ease both;
+}
+
+.signature-text {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(22px, 2.2vw, 32px);
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #6b2d0a 0%, #c8820a 30%, #e8a820 50%, #c8820a 70%, #6b2d0a 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: sig-appear 2s ease both, gold-flow 4s ease-in-out infinite;
+  filter: drop-shadow(0 1px 3px rgba(100,70,10,0.4));
+}
+
+.signature-dot {
+  font-size: 13px;
+  color: #c8a030;
+  text-shadow: 0 0 10px rgba(200,160,48,0.6);
+  animation: sig-shimmer 3s ease-in-out infinite alternate;
+}
+
+@keyframes sig-appear {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes sig-shimmer {
+  from { opacity: 0.5; }
+  to   { opacity: 1; }
+}
+
 /* ── BARRE DE PROGRESSION ── */
 .progress-bar {
   position: absolute;

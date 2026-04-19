@@ -44,16 +44,6 @@
   <!-- LAYOUT -->
   <div class="layout">
 
-    <!-- SIDEBAR -->
-    <app-sidebar
-      [collections]="collections()"
-      [slides]="slides()"
-      [currentIndex]="currentIndex()"
-      [activeCollectionId]="activeCollectionId()"
-      (collectionSelect)="onCollectionSelect($event)"
-      (slideSelect)="onSlideSelect($event)"
-    />
-
     <!-- STAGE -->
     <main class="main">
       @if (loading()) {
@@ -103,6 +93,16 @@
         />
       }
     </main>
+
+    <!-- SIDEBAR droite -->
+    <app-sidebar
+      [collections]="collections()"
+      [slides]="slides()"
+      [currentIndex]="currentIndex()"
+      [activeCollectionId]="activeCollectionId()"
+      (collectionSelect)="onCollectionSelect($event)"
+      (slideSelect)="onSlideSelect($event)"
+    />
 
   </div>
 </div>

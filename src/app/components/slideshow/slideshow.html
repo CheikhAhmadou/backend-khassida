@@ -324,31 +324,34 @@
   <!-- Vignette -->
   <div class="vignette"></div>
 
-  <!-- Cadre lumineux intérieur -->
-  <div class="inner-frame"></div>
-
-  <!-- Coins ornementaux -->
-  <div class="corner corner-tl"></div>
-  <div class="corner corner-tr"></div>
-  <div class="corner corner-bl"></div>
-  <div class="corner corner-br"></div>
-
   <!-- Image précédente (sortante) -->
   @if (previous() && animating()) {
     <div class="slide-layer slide-out" [attr.data-tr]="transition()">
-      <img [src]="imageUrl(previous()!)" [alt]="previous()!.title" class="slide-image"/>
+      <div class="img-frame">
+        <img [src]="imageUrl(previous()!)" [alt]="previous()!.title" class="slide-image"/>
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+      </div>
     </div>
   }
 
   <!-- Image courante (entrante) -->
   @if (current()) {
     <div class="slide-layer slide-in" [attr.data-tr]="transition()">
-      <img
-        [src]="imageUrl(current()!)"
-        [alt]="current()!.title"
-        class="slide-image"
-        (error)="$any($event.target).style.display='none'"
-      />
+      <div class="img-frame">
+        <img
+          [src]="imageUrl(current()!)"
+          [alt]="current()!.title"
+          class="slide-image"
+          (error)="$any($event.target).style.display='none'"
+        />
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+      </div>
     </div>
 
   } @else if (total() === 0) {
@@ -390,11 +393,6 @@
         </div>
       }
     }
-  </div>
-
-  <!-- Overlay mode veille après 30s sans interaction -->
-  <div class="sleep-overlay" [class.on]="isSleeping()">
-    <div class="sleep-txt">بِسْمِ اللَّهِ</div>
   </div>
 
   <!-- Contrôles -->

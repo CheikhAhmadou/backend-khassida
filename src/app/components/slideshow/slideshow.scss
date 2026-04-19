@@ -179,31 +179,6 @@
   flex-shrink: 0;
 }
 
-/* ── MODE VEILLE ── */
-.sleep-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 20;
-  background: rgba(0, 0, 0, 0);
-  pointer-events: none;
-  transition: background 4s ease;
-
-  &.on { background: rgba(0, 0, 0, 0.88); pointer-events: all; }
-}
-
-.sleep-txt {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Scheherazade New', 'Amiri', serif;
-  font-size: clamp(20px, 3vw, 40px);
-  color: rgba(184, 144, 42, 0);
-  transition: color 4s ease;
-
-  .sleep-overlay.on & { color: rgba(184, 144, 42, 0.35); }
-}
 
 /* ═══════════════════════════════��══ */
 
@@ -242,33 +217,36 @@
   z-index: 2;
 }
 
-/* Cadre lumineux intérieur */
-.inner-frame {
-  position: absolute;
-  inset: 14px 14px 58px;
-  border: 1px solid rgba(200, 160, 48, 0.25);
+/* Cadre collé sur la zone d'affichage de l'image */
+.img-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(200, 160, 48, 0.35);
   border-radius: 2px;
-  pointer-events: none;
-  z-index: 3;
   box-shadow:
     inset 0 0 30px rgba(200, 160, 48, 0.04),
-    0 0 20px rgba(200, 160, 48, 0.06);
+    0 0 20px rgba(200, 160, 48, 0.08);
 
   &::before {
     content: '';
     position: absolute;
-    inset: 4px;
-    border: 0.5px solid rgba(200, 160, 48, 0.12);
+    inset: 5px;
+    border: 0.5px solid rgba(200, 160, 48, 0.15);
     border-radius: 1px;
+    pointer-events: none;
+    z-index: 1;
   }
 }
 
-/* Coins ornementaux agrandis */
-.corner {
+.img-frame .corner {
   position: absolute;
-  width: 52px;
-  height: 52px;
-  z-index: 5;
+  width: 36px;
+  height: 36px;
+  z-index: 2;
   pointer-events: none;
 
   &::before, &::after {
@@ -277,22 +255,22 @@
     background: linear-gradient(to right, #c8a030, #f0d060);
     border-radius: 1px;
   }
-  &::before { width: 2.5px; height: 52px; }
-  &::after  { width: 52px;  height: 2.5px; }
+  &::before { width: 2px; height: 36px; }
+  &::after  { width: 36px; height: 2px; }
 
-  &.corner-tl { top: 14px; left: 14px; }
+  &.corner-tl { top: -1px; left: -1px; }
   &.corner-tr {
-    top: 14px; right: 14px;
+    top: -1px; right: -1px;
     &::before { right: 0; left: auto; background: linear-gradient(to left, #c8a030, #f0d060); }
     &::after  { right: 0; left: auto; }
   }
   &.corner-bl {
-    bottom: 58px; left: 14px;
+    bottom: -1px; left: -1px;
     &::before { bottom: 0; top: auto; background: linear-gradient(to bottom, #c8a030, #f0d060); }
     &::after  { bottom: 0; top: auto; }
   }
   &.corner-br {
-    bottom: 58px; right: 14px;
+    bottom: -1px; right: -1px;
     &::before { right: 0; left: auto; bottom: 0; top: auto; }
     &::after  { right: 0; left: auto; bottom: 0; top: auto; }
   }
@@ -308,7 +286,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 72px 80px;
+  padding: 150px 110px 190px;
   z-index: 4;
 }
 
@@ -365,16 +343,15 @@
 }
 
 .slide-image {
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   display: block;
-  border-radius: 3px;
+  border-radius: 4px;
   box-shadow:
     0 8px 40px rgba(120, 85, 15, 0.22),
-    0 2px 8px  rgba(120, 85, 15, 0.14),
-    0 0 0 1.5px rgba(200, 160, 48, 0.20),
-    0 0 0 4px  rgba(200, 160, 48, 0.06);
+    0 2px 8px  rgba(120, 85, 15, 0.14);
+  transition: filter 0.5s;
 }
 
 .slide-empty {
@@ -405,9 +382,7 @@
   z-index: 10;
   white-space: nowrap;
   font-weight: 600;
-  box-shadow:
-    0 2px 10px rgba(160, 120, 20, 0.15),
-    inset 0 1px 0 rgba(255,255,255,0.6);
+  box-shadow: 0 2px 10px rgba(160, 120, 20, 0.15), inset 0 1px 0 rgba(255,255,255,0.6);
 }
 
 /* Titre collection */
@@ -424,9 +399,7 @@
   letter-spacing: 0.04em;
   pointer-events: none;
   z-index: 9;
-  text-shadow:
-    0 1px 8px rgba(255, 248, 220, 0.8),
-    0 0 30px rgba(200, 160, 48, 0.15);
+  text-shadow: 0 1px 8px rgba(255, 248, 220, 0.8), 0 0 30px rgba(200, 160, 48, 0.15);
   opacity: 0.85;
 }
 

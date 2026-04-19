@@ -63,7 +63,6 @@ export class SlideshowComponent implements OnInit, AfterViewInit, OnDestroy {
   previous = computed(() => this.prevIndex() !== null ? (this._slides()[this.prevIndex()!] ?? null) : null);
   total    = computed(() => this._slides().length);
 
-  isSleeping    = signal(false);
   chapeletCount = computed(() => Math.min(this.total(), 30));
   currentVerse  = signal(0);
   verseVisible  = signal(true);
@@ -80,11 +79,9 @@ export class SlideshowComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private timer: ReturnType<typeof setInterval> | null = null;
   private progressTimer: ReturnType<typeof setInterval> | null = null;
-  private sleepTimer: ReturnType<typeof setTimeout> | null = null;
   private particleInterval: ReturnType<typeof setInterval> | null = null;
   private verseTimer: ReturnType<typeof setInterval> | null = null;
   private startedAt = 0;
-  private readonly SLEEP_MS = 30000;
 
   ngOnInit(): void { this.restartAutoplay(); }
 
@@ -103,20 +100,12 @@ export class SlideshowComponent implements OnInit, AfterViewInit, OnDestroy {
         }, 1000);
       });
     }, 12000);
-    this.resetSleep();
   }
 
   ngOnDestroy(): void {
     this.clearTimers();
-    if (this.sleepTimer)   clearTimeout(this.sleepTimer);
     if (this.particleInterval) clearInterval(this.particleInterval);
     if (this.verseTimer)   clearInterval(this.verseTimer);
-  }
-
-  resetSleep(): void {
-    if (this.sleepTimer) clearTimeout(this.sleepTimer);
-    this.isSleeping.set(false);
-    this.sleepTimer = setTimeout(() => this.zone.run(() => this.isSleeping.set(true)), this.SLEEP_MS);
   }
 
   private spawnParticle(): void {
@@ -131,8 +120,6 @@ export class SlideshowComponent implements OnInit, AfterViewInit, OnDestroy {
     container.appendChild(p);
     setTimeout(() => p.remove(), (dur + 4) * 1000);
   }
-
-  @HostListener('mousemove') @HostListener('click') onActivity(): void { this.resetSleep(); }
 
   restartAutoplay(): void {
     this.clearTimers();

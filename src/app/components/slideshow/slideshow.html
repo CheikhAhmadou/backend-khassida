@@ -1,5 +1,11 @@
 <div class="stage">
 
+  <!-- Vidéo de fond -->
+  <video class="bg-video" autoplay muted loop playsinline>
+    <source src="bg-video.mp4" type="video/mp4">
+  </video>
+  <div class="bg-video-overlay"></div>
+
   <!-- Géométrie islamique rotative (slow spin 90s) -->
   <div class="geom-rotate-wrap">
     <svg class="geom-rotate" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
@@ -19,6 +25,17 @@
 
   <!-- Particules dorées flottantes -->
   <div class="particles"></div>
+
+  <!-- Portrait Cheikh haut-gauche animé -->
+  <div class="cheikh-badge">
+    <img src="cheikh-portrait.png" alt="Cheikh Ahmadou Bamba" class="cheikh-img"/>
+    <div class="cheikh-glow"></div>
+  </div>
+
+  <!-- Image main khassida bas-gauche -->
+  <div class="main-badge">
+    <img src="cheikh-main.png" alt="Main tenant khassida" class="main-img"/>
+  </div>
 
   <!-- Croissant + étoile animé haut-droite -->
   <div class="crescent-badge">
@@ -158,22 +175,6 @@
       <line x1="960"  y1="40"  x2="960"  y2="960" stroke-width="0.5"/>
     </g>
 
-    <!-- ══ ÉTOILE ISLAMIQUE 8 BRANCHES — fond centre ══ -->
-    <g opacity="0.07" transform="translate(960,500)">
-      <polygon fill="#b8902a"
-        points="0,-200 47,-47 200,0 47,47 0,200 -47,47 -200,0 -47,-47"/>
-      <polygon fill="none" stroke="#b8902a" stroke-width="1"
-        points="0,-160 38,-38 160,0 38,38 0,160 -38,38 -160,0 -38,-38"/>
-    </g>
-
-    <!-- ══ ÉTOILE DE TOUBA 5 BRANCHES — centre ══ -->
-    <g opacity="0.13" transform="translate(960,500)">
-      <polygon fill="none" stroke="#b8902a" stroke-width="1.5"
-        points="0,-100 23.5,-32.3 95.1,-30.9 38.0,12.4 58.8,80.9 0,38 -58.8,80.9 -38,12.4 -95.1,-30.9 -23.5,-32.3"/>
-      <polygon fill="rgba(184,144,42,0.08)" stroke="#b8902a" stroke-width="0.7"
-        points="0,-160 37.6,-51.7 152.2,-49.4 60.8,19.8 94.1,129.4 0,60.8 -94.1,129.4 -60.8,19.8 -152.2,-49.4 -37.6,-51.7"/>
-    </g>
-
     <!-- ══ ARCHE / MIHRAB — haut centre ══ -->
     <g opacity="0.14" transform="translate(960,0)" fill="none" stroke="#b8902a">
       <path stroke-width="1.2"
@@ -285,14 +286,6 @@
         points="0,-12 2.8,-3.9 11.4,-3.9 4.6,1.5 7.4,10 0,4.6 -7.4,10 -4.6,1.5 -11.4,-3.9 -2.8,-3.9"/>
     </g>
 
-    <!-- ══ CROISSANT + ÉTOILE — haut centre ══ -->
-    <g opacity="0.18" transform="translate(960,55)">
-      <path fill="none" stroke="#b8902a" stroke-width="2"
-        d="M-24,0 A24,24 0 1,1 24,0 A17,17 0 1,0 -24,0 Z"/>
-      <polygon fill="#b8902a" transform="translate(36,-10) scale(0.9)"
-        points="0,-18 4.2,-5.9 17,-5.9 7,1.8 11.2,15.3 0,7 -11.2,15.3 -7,1.8 -17,-5.9 -4.2,-5.9"/>
-    </g>
-
     <!-- ══ ROSETTES AUX MILIEUX DES CÔTÉS ══ -->
     <g fill="none" stroke="#b8902a" stroke-width="0.7" opacity="0.13">
       <!-- milieu gauche -->
@@ -364,16 +357,21 @@
     </div>
   }
 
-  <!-- Chip collection -->
+  <!-- Titre collection animé haut centre -->
   @if (current()) {
-    <div class="slide-chip">
-      {{ current()!.collection?.name ?? '' }} &nbsp;·&nbsp; {{ currentIndex() + 1 }} / {{ total() }}
+    <div class="collection-header">
+      <div class="collection-header-line"></div>
+      <div class="collection-header-content">
+        <span class="collection-header-star">✦</span>
+        <div class="collection-header-text">
+          <span class="collection-header-ar">{{ current()!.collection?.name ?? '' }}</span>
+          <span class="collection-header-counter">{{ currentIndex() + 1 }} / {{ total() }}</span>
+        </div>
+        <span class="collection-header-star">✦</span>
+      </div>
+      <div class="collection-header-line"></div>
+      <span class="collection-header-subtitle">الخَصَائِدُ المُرِيدِيَّة</span>
     </div>
-  }
-
-  <!-- Titre collection -->
-  @if (current()) {
-    <div class="slide-title">{{ current()!.collection?.name ?? '' }}</div>
   }
 
   <!-- Barre de progression -->

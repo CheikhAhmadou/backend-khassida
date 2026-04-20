@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, signal, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal, computed, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Collection, Khassida } from '../../models/collection.model';
@@ -14,14 +14,29 @@ import { SidebarComponent } from '../../components/sidebar/sidebar';
   styleUrl: './home.scss',
 })
 export class Home implements OnInit, OnDestroy {
-  private api = inject(ApiService);
+  readonly api = inject(ApiService);
 
-  collections = signal<Collection[]>([]);
-  slides = signal<Khassida[]>([]);
+  collections      = signal<Collection[]>([]);
+  slides           = signal<Khassida[]>([]);
   activeCollectionId = signal<number | null>(null);
-  currentIndex = signal(0);
-  loading = signal(true);
-  newSlidesCount = signal(0);
+  currentIndex     = signal(0);
+  loading          = signal(true);
+  newSlidesCount   = signal(0);
+  sidebarOpen      = signal(false);
+
+  // ── Browser mode ──
+  appMode                  = signal<'browser' | 'slideshow'>('browser');
+  browserView              = signal<'folders' | 'files'>('folders');
+  browserOpenCollectionId  = signal<number | null>(null);
+  browserKhassidas         = signal<Khassida[]>([]);
+  browserKhassidaLoading   = signal(false);
+  browserStartIndex        = signal(0);
+
+  browserOpenCollectionName = computed(() => {
+    const id = this.browserOpenCollectionId();
+    if (id === null && this.browserView() === 'files') return 'Tous les khassida';
+    return this.collections().find(c => c.id === id)?.name ?? '';
+  });
 
   private syncTimer: ReturnType<typeof setInterval> | null = null;
   private lastKnownCount = 0;
@@ -35,6 +50,58 @@ export class Home implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.syncTimer) clearInterval(this.syncTimer);
+  }
+
+  toggleSidebar(): void { this.sidebarOpen.update(v => !v); }
+  closeSidebar():  void { this.sidebarOpen.set(false); }
+
+  @HostListener('window:resize')
+  onResize(): void {
+    if (window.innerWidth >= 1024) this.sidebarOpen.set(false);
+  }
+
+  // ── Ouvrir un dossier → charger ses khassidas ──
+  openFolder(collectionId: number | null): void {
+    this.browserOpenCollectionId.set(collectionId);
+    this.browserStartIndex.set(0);
+    this.browserView.set('files');
+    this.browserKhassidaLoading.set(true);
+    this.api.getSlideshow(collectionId ?? undefined).subscribe({
+      next: slides => {
+        this.browserKhassidas.set(slides);
+        this.browserKhassidaLoading.set(false);
+      },
+      error: () => this.browserKhassidaLoading.set(false),
+    });
+  }
+
+  backToFolders(): void {
+    this.browserView.set('folders');
+    this.browserKhassidas.set([]);
+  }
+
+  imageUrl(slide: Khassida): string {
+    return this.api.imageUrl(slide);
+  }
+
+  // ── Lancer le diaporama ──
+  launchSlideshow(collectionId: number | null, startIndex = 0): void {
+    this.activeCollectionId.set(collectionId);
+    this.lastKnownId = 0;
+    this.currentIndex.set(startIndex);
+    if (this.browserView() === 'files' && this.browserKhassidas().length > 0) {
+      this.slides.set(this.browserKhassidas());
+      this.loading.set(false);
+      this.lastKnownCount = this.browserKhassidas().length;
+      this.lastKnownId = this.browserKhassidas()[this.browserKhassidas().length - 1]?.id ?? 0;
+    } else {
+      this.loadSlideshow(collectionId ?? undefined);
+    }
+    this.appMode.set('slideshow');
+  }
+
+  backToBrowser(): void {
+    this.appMode.set('browser');
   }
 
   private startSync(): void {
@@ -70,6 +137,7 @@ export class Home implements OnInit, OnDestroy {
     this.activeCollectionId.set(id);
     this.lastKnownId = 0;
     this.loadSlideshow(id ?? undefined);
+    this.closeSidebar();
   }
 
   onSlideSelect(index: number): void { this.currentIndex.set(index); }

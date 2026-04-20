@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Cinzel:wght@400;500;600&family=Inter:wght@300;400;500&display=swap');
 
-$bg-deep:    #1a1206;
-$bg-mid:     #231808;
-$gold:       #c8a030;
-$gold-dim:   rgba(200, 160, 48, 0.5);
-$gold-faint: rgba(200, 160, 48, 0.15);
+$bg-deep:    #011714;
+$bg-mid:     #011e1a;
+$gold:       #d0a13b;
+$gold-dim:   rgba(208, 161, 59, 0.5);
+$gold-faint: rgba(208, 161, 59, 0.15);
 $cream:      #f5e8c0;
-$border:     rgba(200, 160, 48, 0.18);
+$border:     rgba(208, 161, 59, 0.18);
 $text-muted: rgba(245, 220, 160, 0.4);
 
 .shell {
@@ -19,7 +19,6 @@ $text-muted: rgba(245, 220, 160, 0.4);
   position: relative;
 }
 
-/* Motif arabesque en fond très subtil */
 .shell-bg-pattern {
   position: absolute;
   inset: 0;
@@ -35,18 +34,17 @@ $text-muted: rgba(245, 220, 160, 0.4);
 /* ── TOP NAV ── */
 .topnav {
   position: relative;
-  z-index: 10;
+  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
-  height: 56px;
-  background: linear-gradient(to right, #1e1508, #2a1c0a, #1e1508);
+  padding: 0 clamp(10px, 2vw, 20px);
+  height: clamp(48px, 6vh, 56px);
+  background: linear-gradient(to right, #011210, #011c18, #011210);
   border-bottom: 1px solid $border;
   flex-shrink: 0;
   box-shadow: 0 2px 16px rgba(0,0,0,0.4);
 
-  /* Ligne dorée déco en bas */
   &::after {
     content: '';
     position: absolute;
@@ -57,22 +55,39 @@ $text-muted: rgba(245, 220, 160, 0.4);
   }
 }
 
-.nav-brand { display: flex; align-items: center; gap: 12px; }
+.nav-brand { display: flex; align-items: center; gap: clamp(6px, 1vw, 12px); }
 
 .nav-logo {
-  width: 36px; height: 36px;
-  background: radial-gradient(circle, #2e1e08, #1a1206);
-  border: 1px solid rgba(200,160,48,0.4);
+  width: clamp(28px, 3vw, 36px);
+  height: clamp(28px, 3vw, 36px);
+  background: radial-gradient(circle, #011c18, #011714);
+  border: 1px solid rgba(208,161,59,0.4);
   border-radius: 8px;
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 0 12px rgba(200,160,48,0.25), inset 0 0 8px rgba(200,160,48,0.05);
-  svg { width: 26px; height: 26px; }
+  box-shadow: 0 0 12px rgba(208,161,59,0.25);
+  flex-shrink: 0;
+  svg { width: 20px; height: 20px; }
 }
 
-.nav-title { font-size: 14px; font-weight: 600; color: $gold; letter-spacing: 0.06em; }
+.nav-title {
+  font-size: clamp(11px, 1.2vw, 14px);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  background: linear-gradient(135deg, #011714 0%, #022e20 38%, #d0a13b 50%, #022e20 62%, #011714 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: nav-gold-flow 4s ease-in-out infinite;
+}
+
+@keyframes nav-gold-flow {
+  0%,100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
 
 .nav-sub {
-  font-size: 10px;
+  font-size: clamp(8px, 0.8vw, 10px);
   color: $gold-dim;
   margin-top: 2px;
   display: flex;
@@ -80,35 +95,38 @@ $text-muted: rgba(245, 220, 160, 0.4);
   gap: 4px;
 }
 
+.nav-sub--desktop { display: none; }
+@media (min-width: 640px) { .nav-sub--desktop { display: flex; } }
+
 .nav-ar {
   font-family: 'Scheherazade New', serif;
-  font-size: 13px;
-  color: rgba(200,160,48,0.7);
+  font-size: clamp(10px, 1vw, 13px);
+  color: rgba(208,161,59,0.7);
   direction: rtl;
 }
 
-/* Calligraphie centrale Bismillah */
 .nav-callig {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   pointer-events: none;
+  display: none;
 }
+@media (min-width: 768px) { .nav-callig { display: block; } }
 
 .nav-callig-text {
   font-family: 'Scheherazade New', serif;
-  font-size: 16px;
-  color: rgba(200, 160, 48, 0.35);
-  letter-spacing: 0.04em;
+  font-size: clamp(12px, 1.2vw, 16px);
+  color: rgba(208, 161, 59, 0.35);
   direction: rtl;
   white-space: nowrap;
 }
 
-.nav-actions { display: flex; gap: 10px; align-items: center; position: relative; z-index: 1; }
+.nav-actions { display: flex; gap: clamp(6px, 0.8vw, 10px); align-items: center; position: relative; z-index: 1; }
 
 .nav-badge {
-  font-size: 11px;
-  padding: 3px 10px;
+  font-size: clamp(9px, 0.9vw, 11px);
+  padding: 3px 8px;
   border: 0.5px solid $border;
   border-radius: 20px;
   color: $gold;
@@ -116,66 +134,133 @@ $text-muted: rgba(245, 220, 160, 0.4);
 }
 
 .nav-sync-badge {
-  font-size: 11px;
-  padding: 3px 10px;
+  font-size: clamp(9px, 0.9vw, 11px);
+  padding: 3px 8px;
   border-radius: 20px;
   background: rgba(80, 200, 120, 0.12);
   border: 0.5px solid rgba(80, 200, 120, 0.35);
   color: #6ed49a;
-  animation: fadeIn 0.4s ease;
 }
 
-@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
-
 .nav-btn-admin {
-  font-size: 11px;
-  padding: 5px 12px;
+  font-size: clamp(9px, 0.9vw, 11px);
+  padding: 5px 10px;
   border-radius: 6px;
   background: $gold-faint;
-  border: 0.5px solid rgba(200, 160, 48, 0.35);
+  border: 0.5px solid rgba(208, 161, 59, 0.35);
   color: $gold;
   text-decoration: none;
   transition: all 0.15s;
-  &:hover { background: rgba(200,160,48,0.25); box-shadow: 0 0 8px rgba(200,160,48,0.2); }
+  &:hover { background: rgba(208,161,59,0.25); }
 }
 
+.nav-btn-admin--desktop { display: none; }
+@media (min-width: 640px) { .nav-btn-admin--desktop { display: inline-flex; } }
+
+/* Burger mobile */
+.nav-burger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 34px; height: 34px;
+  background: $gold-faint;
+  border: 0.5px solid rgba(208,161,59,0.35);
+  border-radius: 7px;
+  cursor: pointer;
+  padding: 6px 7px;
+
+  span {
+    display: block;
+    width: 100%; height: 1.5px;
+    background: $gold;
+    border-radius: 2px;
+    transition: all 0.25s;
+  }
+
+  &.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  &.open span:nth-child(2) { opacity: 0; }
+  &.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+}
+
+@media (min-width: 1024px) { .nav-burger { display: none; } }
+
+/* ── LAYOUT ── */
 .layout { display: flex; flex: 1; overflow: hidden; position: relative; z-index: 1; }
 
-.main { flex: 1; position: relative; overflow: hidden; }
+.main { flex: 1; position: relative; overflow: hidden; min-width: 0; }
 
-/* ── ÉCRAN DE CHARGEMENT ── */
+/* ── SIDEBAR RESPONSIVE ── */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 30;
+  opacity: 0;
+  transition: opacity 0.3s;
+
+  &.visible { opacity: 1; }
+}
+
+.sidebar-wrap {
+  flex-shrink: 0;
+  display: flex;
+}
+
+/* Mobile/Tablette : sidebar en overlay */
+@media (max-width: 1023px) {
+  .sidebar-overlay { display: block; pointer-events: none; }
+  .sidebar-overlay.visible { pointer-events: auto; }
+
+  .sidebar-wrap {
+    position: fixed;
+    top: 0; right: -100%;
+    width: min(300px, 85vw);
+    height: 100%;
+    z-index: 31;
+    transition: right 0.3s cubic-bezier(0.22,1,0.36,1);
+
+    &.open { right: 0; }
+
+    app-sidebar { width: 100%; }
+  }
+}
+
+/* ── LOADING ── */
 .loading {
   position: absolute; inset: 0;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   gap: 12px;
-  background:
-    radial-gradient(ellipse at 50% 40%, #2e1e06 0%, #1a1206 60%, #0e0b04 100%);
+  background: radial-gradient(ellipse at 50% 40%, #011c18 0%, #011714 60%, #010a08 100%);
 }
 
 .loading-mosque {
   opacity: 0.7;
-  filter: drop-shadow(0 0 20px rgba(200,160,48,0.3));
+  filter: drop-shadow(0 0 20px rgba(208,161,59,0.3));
   animation: mosque-glow 3s ease-in-out infinite alternate;
+  width: clamp(80px, 15vw, 160px);
+  height: auto;
 }
 
 @keyframes mosque-glow {
-  from { filter: drop-shadow(0 0 10px rgba(200,160,48,0.2)); opacity: 0.6; }
-  to   { filter: drop-shadow(0 0 30px rgba(200,160,48,0.5)); opacity: 0.9; }
+  from { filter: drop-shadow(0 0 10px rgba(208,161,59,0.2)); opacity: 0.6; }
+  to   { filter: drop-shadow(0 0 30px rgba(208,161,59,0.5)); opacity: 0.9; }
 }
 
 .loading-title {
   font-family: 'Scheherazade New', serif;
-  font-size: 32px;
+  font-size: clamp(22px, 4vw, 32px);
   font-weight: 700;
   color: $gold;
   letter-spacing: 0.1em;
   direction: rtl;
-  text-shadow: 0 0 20px rgba(200,160,48,0.4);
+  text-shadow: 0 0 20px rgba(208,161,59,0.4);
 }
 
 .loading-sub {
-  font-size: 12px;
+  font-size: clamp(10px, 1.2vw, 12px);
   color: $text-muted;
   letter-spacing: 0.1em;
 }
@@ -183,15 +268,378 @@ $text-muted: rgba(245, 220, 160, 0.4);
 .loading-stars {
   display: flex;
   gap: 12px;
-  color: rgba(200,160,48,0.4);
+  color: rgba(208,161,59,0.4);
   font-size: 10px;
   animation: stars-pulse 2s ease-in-out infinite;
-
-  span:nth-child(2) { animation-delay: 0.3s; }
-  span:nth-child(3) { animation-delay: 0.6s; }
 }
 
 @keyframes stars-pulse {
   0%, 100% { opacity: 0.3; }
   50%       { opacity: 0.8; }
+}
+
+/* ══════════════════════════════════
+   VUE BUREAU (COLLECTION BROWSER)
+══════════════════════════════════ */
+
+.browser {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(20px, 4vh, 48px) clamp(16px, 4vw, 64px) 40px;
+  position: relative;
+  z-index: 1;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-thumb { background: rgba(208,161,59,0.2); border-radius: 2px; }
+}
+
+/* En-tête hero */
+.browser-hero {
+  text-align: center;
+  margin-bottom: clamp(24px, 4vh, 48px);
+}
+
+.browser-hero-ornament {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.browser-hero-line {
+  width: clamp(40px, 8vw, 120px);
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(208,161,59,0.5), transparent);
+}
+
+.browser-hero-star {
+  color: $gold;
+  font-size: 14px;
+  text-shadow: 0 0 12px rgba(208,161,59,0.6);
+  animation: browser-star-pulse 3s ease-in-out infinite;
+}
+
+@keyframes browser-star-pulse {
+  0%,100% { text-shadow: 0 0 8px rgba(208,161,59,0.4); }
+  50%      { text-shadow: 0 0 20px rgba(208,161,59,0.9), 0 0 40px rgba(208,161,59,0.3); }
+}
+
+.browser-hero-title {
+  font-family: 'Scheherazade New', serif;
+  font-size: clamp(22px, 4vw, 42px);
+  font-weight: 700;
+  direction: rtl;
+  background: linear-gradient(135deg, #011714 0%, #022e20 38%, #d0a13b 50%, #022e20 62%, #011714 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: nav-gold-flow 4s ease-in-out infinite;
+  margin: 0 0 8px;
+}
+
+.browser-hero-sub {
+  font-size: clamp(11px, 1.2vw, 13px);
+  color: $text-muted;
+  letter-spacing: 0.08em;
+}
+
+/* Loading dans le bureau */
+.browser-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 60px;
+  color: $text-muted;
+  font-size: 13px;
+}
+
+.browser-spinner {
+  width: 32px; height: 32px;
+  border: 2px solid rgba(208,161,59,0.15);
+  border-top-color: $gold;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Grille de dossiers */
+.browser-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(100px, 14vw, 160px), 1fr));
+  gap: clamp(12px, 2vw, 24px);
+  width: 100%;
+  max-width: 1400px;
+}
+
+/* Dossier */
+.folder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(208,161,59,0.12);
+  background: rgba(208,161,59,0.04);
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  text-align: center;
+
+  &:hover {
+    border-color: rgba(208,161,59,0.35);
+    background: rgba(208,161,59,0.09);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25), 0 0 0 1px rgba(208,161,59,0.2);
+  }
+
+  &.selected {
+    border-color: $gold;
+    background: rgba(208,161,59,0.14);
+    transform: translateY(-4px);
+    box-shadow:
+      0 8px 28px rgba(0,0,0,0.3),
+      0 0 0 1px rgba(208,161,59,0.4),
+      0 0 24px rgba(208,161,59,0.15);
+  }
+}
+
+.folder-icon {
+  width: clamp(48px, 7vw, 80px);
+  height: auto;
+  color: $gold;
+
+  svg { width: 100%; height: auto; display: block; }
+}
+
+.folder-icon--all {
+  color: #f0d060;
+}
+
+.folder-name {
+  font-size: clamp(10px, 1.1vw, 12px);
+  font-weight: 500;
+  color: $cream;
+  line-height: 1.3;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+.folder-count {
+  font-size: clamp(9px, 0.9vw, 11px);
+  color: $text-muted;
+}
+
+.folder-selected-badge {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 10px;
+  color: $gold;
+  text-shadow: 0 0 8px rgba(208,161,59,0.8);
+  animation: browser-star-pulse 2s ease-in-out infinite;
+}
+
+/* Bouton lancer */
+.browser-launch {
+  margin-top: clamp(24px, 4vh, 48px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.launch-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: clamp(10px, 1.5vh, 16px) clamp(24px, 4vw, 48px);
+  background: linear-gradient(135deg, rgba(208,161,59,0.2) 0%, rgba(208,161,59,0.12) 100%);
+  border: 1.5px solid $gold;
+  border-radius: 10px;
+  color: $gold;
+  font-size: clamp(13px, 1.4vw, 16px);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+  box-shadow: 0 0 20px rgba(208,161,59,0.1);
+
+  &:hover {
+    background: linear-gradient(135deg, rgba(208,161,59,0.35) 0%, rgba(208,161,59,0.2) 100%);
+    box-shadow: 0 0 32px rgba(208,161,59,0.25), 0 4px 16px rgba(0,0,0,0.2);
+    transform: translateY(-2px);
+  }
+
+  svg { flex-shrink: 0; }
+}
+
+.launch-hint {
+  font-size: 11px;
+  color: $text-muted;
+  font-style: italic;
+}
+
+/* ══ VUE FICHIERS (khassidas) ══ */
+
+.files-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 1400px;
+  margin-bottom: clamp(16px, 3vh, 32px);
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(208,161,59,0.15);
+  flex-wrap: wrap;
+}
+
+.files-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(208,161,59,0.08);
+  border: 0.5px solid rgba(208,161,59,0.25);
+  border-radius: 7px;
+  color: $gold;
+  font-size: 12px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-family: inherit;
+  flex-shrink: 0;
+  transition: all 0.15s;
+  &:hover { background: rgba(208,161,59,0.18); }
+}
+
+.files-breadcrumb {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.files-breadcrumb-icon {
+  color: $gold;
+  font-size: 12px;
+  flex-shrink: 0;
+  text-shadow: 0 0 8px rgba(208,161,59,0.6);
+}
+
+.files-breadcrumb-name {
+  font-size: clamp(13px, 1.5vw, 18px);
+  font-weight: 600;
+  color: $cream;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: linear-gradient(135deg, #011714 0%, #022e20 38%, #d0a13b 50%, #022e20 62%, #011714 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: nav-gold-flow 4s ease-in-out infinite;
+}
+
+/* Grille khassidas */
+.files-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(80px, 11vw, 140px), 1fr));
+  gap: clamp(8px, 1.5vw, 16px);
+  width: 100%;
+  max-width: 1400px;
+}
+
+.file-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  transition: transform 0.15s;
+
+  &:hover { transform: translateY(-2px); }
+
+  &.selected .file-thumb {
+    border-color: $gold;
+    box-shadow: 0 0 0 2px rgba(208,161,59,0.4), 0 4px 16px rgba(208,161,59,0.2);
+  }
+}
+
+.file-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3/4;
+  border-radius: 6px;
+  border: 1px solid rgba(208,161,59,0.15);
+  background: rgba(208,161,59,0.05);
+  overflow: hidden;
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: sepia(1) hue-rotate(132deg) saturate(1.1) brightness(0.88) contrast(1.08);
+  }
+}
+
+.file-num {
+  position: absolute;
+  top: 4px; left: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  color: $gold;
+  background: rgba(1,23,20,0.75);
+  border-radius: 4px;
+  padding: 1px 5px;
+  letter-spacing: 0.04em;
+}
+
+.file-selected-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(208,161,59,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $gold;
+  filter: drop-shadow(0 0 8px rgba(208,161,59,0.8));
+}
+
+.file-title {
+  font-size: clamp(9px, 0.9vw, 11px);
+  color: $text-muted;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  padding: 0 2px;
+}
+
+.launch-btn--sm {
+  padding: 6px 14px;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+/* Bouton retour dans la nav */
+.nav-btn-back {
+  font-size: clamp(9px, 0.9vw, 11px);
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: rgba(208,161,59,0.08);
+  border: 0.5px solid rgba(208,161,59,0.3);
+  color: $gold;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+  &:hover { background: rgba(208,161,59,0.2); }
 }

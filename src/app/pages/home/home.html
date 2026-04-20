@@ -1,108 +1,212 @@
 <div class="shell">
 
-  <!-- Arabesque background pattern -->
   <div class="shell-bg-pattern"></div>
 
   <!-- TOP NAV -->
   <nav class="topnav">
     <div class="nav-brand">
-      <!-- Logo étoile mouride -->
       <div class="nav-logo">
         <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Étoile 5 branches Mouride -->
           <polygon points="16,2 19.5,11.5 29.5,11.5 21.5,17.5 24.5,27 16,21 7.5,27 10.5,17.5 2.5,11.5 12.5,11.5"
-            fill="#1a1206" stroke="#1a1206" stroke-width="0.3"/>
+            fill="#011714" stroke="#011714" stroke-width="0.3"/>
           <polygon points="16,4 19,12.5 27.5,12.5 20.5,17.8 23.2,26 16,21.2 8.8,26 11.5,17.8 4.5,12.5 13,12.5"
-            fill="#c8a030"/>
-          <!-- Croissant central -->
-          <path d="M16,10 A6,6 0 1,1 16,22 A4,4 0 1,0 16,10 Z" fill="#1a1206"/>
+            fill="#d0a13b"/>
+          <path d="M16,10 A6,6 0 1,1 16,22 A4,4 0 1,0 16,10 Z" fill="#011714"/>
         </svg>
       </div>
       <div>
         <div class="nav-title">Khassida Projection</div>
-        <div class="nav-sub">
+        <div class="nav-sub nav-sub--desktop">
           <span class="nav-ar">خَادِمُ الرَّسُولِ</span>
           &nbsp;·&nbsp; Diaporama grand écran
         </div>
       </div>
     </div>
 
-    <!-- Calligraphie centrale -->
     <div class="nav-callig">
       <span class="nav-callig-text">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</span>
     </div>
 
     <div class="nav-actions">
       @if (newSlidesCount() > 0) {
-        <span class="nav-sync-badge">+{{ newSlidesCount() }} nouvelle(s)</span>
+        <span class="nav-sync-badge">+{{ newSlidesCount() }}</span>
       }
       <span class="nav-badge">{{ slides().length }} images</span>
-      <a routerLink="/admin" class="nav-btn-admin">Admin</a>
+
+      @if (appMode() === 'slideshow') {
+        <button class="nav-btn-back nav-btn-admin--desktop" (click)="backToBrowser()">
+          ← Collections
+        </button>
+      }
+      <a routerLink="/admin" class="nav-btn-admin nav-btn-admin--desktop">Admin</a>
+
+      <button class="nav-burger" (click)="toggleSidebar()" [class.open]="sidebarOpen()">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
-  <!-- LAYOUT -->
-  <div class="layout">
+  <!-- ══ VUE BUREAU ══ -->
+  @if (appMode() === 'browser') {
+    <div class="browser">
 
-    <!-- STAGE -->
-    <main class="main">
-      @if (loading()) {
-        <div class="loading">
-          <!-- Mosquée de Touba SVG -->
-          <svg class="loading-mosque" width="160" height="120" viewBox="0 0 320 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Dôme central -->
-            <ellipse cx="160" cy="80" rx="60" ry="52" fill="#c8a030" opacity="0.2"/>
-            <ellipse cx="160" cy="80" rx="55" ry="47" fill="none" stroke="#c8a030" stroke-width="1" opacity="0.5"/>
-            <rect x="100" y="80" width="120" height="50" fill="#c8a030" opacity="0.15"/>
-            <rect x="100" y="80" width="120" height="50" fill="none" stroke="#c8a030" stroke-width="0.8" opacity="0.4"/>
-            <!-- Dômes secondaires -->
-            <ellipse cx="68" cy="108" rx="30" ry="24" fill="#c8a030" opacity="0.12"/>
-            <ellipse cx="252" cy="108" rx="30" ry="24" fill="#c8a030" opacity="0.12"/>
-            <rect x="38" y="108" width="60" height="22" fill="#c8a030" opacity="0.1"/>
-            <rect x="222" y="108" width="60" height="22" fill="#c8a030" opacity="0.1"/>
-            <!-- Façade -->
-            <rect x="38" y="130" width="244" height="70" fill="#c8a030" opacity="0.08"/>
-            <rect x="38" y="130" width="244" height="70" fill="none" stroke="#c8a030" stroke-width="0.8" opacity="0.35"/>
-            <!-- Porte principale arche -->
-            <path d="M140,200 L140,163 Q140,148 160,148 Q180,148 180,163 L180,200 Z" fill="#c8a030" opacity="0.2"/>
-            <!-- Minaret central -->
-            <rect x="152" y="28" width="16" height="52"/> <!-- base -->
-            <rect x="154" y="8" width="12" height="20"/>
-            <polygon points="160,0 154,8 166,8" fill="#c8a030" opacity="0.6"/>
-            <rect x="150" y="28" width="20" height="5" fill="#c8a030" opacity="0.3"/>
-            <!-- Minarets secondaires -->
-            <rect x="92" y="90" width="10" height="40" fill="#c8a030" opacity="0.3"/>
-            <polygon points="97,84 92,90 102,90" fill="#c8a030" opacity="0.5"/>
-            <rect x="218" y="90" width="10" height="40" fill="#c8a030" opacity="0.3"/>
-            <polygon points="223,84 218,90 228,90" fill="#c8a030" opacity="0.5"/>
-            <!-- Croissant minaret central -->
-            <path d="M157,1 A3,3 0 1,1 163,1 A2,2 0 1,0 157,1 Z" fill="#c8a030" opacity="0.8"/>
-          </svg>
-          <div class="loading-title">طُوبَى</div>
-          <div class="loading-sub">Chargement des khassidas…</div>
-          <!-- Étoiles décoratives -->
-          <div class="loading-stars">
-            <span>✦</span><span>✦</span><span>✦</span>
+      <!-- ── VUE DOSSIERS ── -->
+      @if (browserView() === 'folders') {
+
+        <div class="browser-hero">
+          <div class="browser-hero-ornament">
+            <div class="browser-hero-line"></div>
+            <span class="browser-hero-star">✦</span>
+            <div class="browser-hero-line"></div>
           </div>
+          <h1 class="browser-hero-title">الخَصَائِدُ المُرِيدِيَّة</h1>
+          <p class="browser-hero-sub">Cliquez sur un dossier pour voir ses khassidas</p>
         </div>
-      } @else {
-        <app-slideshow
-          [slides]="slides()"
-          [intervalMs]="5000"
-          (indexChange)="onIndexChange($event)"
-        />
+
+        @if (loading()) {
+          <div class="browser-loading">
+            <div class="browser-spinner"></div>
+            <span>Chargement des collections…</span>
+          </div>
+        } @else {
+          <div class="browser-grid">
+
+            <!-- Dossier "Tous" -->
+            <div class="folder" (click)="openFolder(null)" (dblclick)="launchSlideshow(null)">
+              <div class="folder-icon folder-icon--all">
+                <svg viewBox="0 0 56 48" fill="none">
+                  <path d="M2,12 L2,44 Q2,46 4,46 L52,46 Q54,46 54,44 L54,16 Q54,14 52,14 L28,14 L24,10 Q23,8 21,8 L4,8 Q2,8 2,10 Z" fill="currentColor" opacity="0.18"/>
+                  <path d="M2,16 L2,44 Q2,46 4,46 L52,46 Q54,46 54,44 L54,18 Q54,16 52,16 Z" fill="currentColor" opacity="0.30"/>
+                  <polygon transform="translate(28,30)" points="0,-10 2.4,-3.1 9.5,-3.1 3.8,1.2 6.1,8.2 0,3.8 -6.1,8.2 -3.8,1.2 -9.5,-3.1 -2.4,-3.1" fill="currentColor" opacity="0.75"/>
+                </svg>
+              </div>
+              <div class="folder-name">Tous les khassida</div>
+              <div class="folder-count">{{ slides().length }} images</div>
+            </div>
+
+            <!-- Dossiers collections -->
+            @for (col of collections(); track col.id) {
+              <div class="folder" (click)="openFolder(col.id)" (dblclick)="launchSlideshow(col.id)">
+                <div class="folder-icon">
+                  <svg viewBox="0 0 56 48" fill="none">
+                    <path d="M2,12 L2,44 Q2,46 4,46 L52,46 Q54,46 54,44 L54,16 Q54,14 52,14 L28,14 L24,10 Q23,8 21,8 L4,8 Q2,8 2,10 Z" fill="currentColor" opacity="0.18"/>
+                    <path d="M2,16 L2,44 Q2,46 4,46 L52,46 Q54,46 54,44 L54,18 Q54,16 52,16 Z" fill="currentColor" opacity="0.30"/>
+                    <text x="28" y="36" text-anchor="middle" font-family="Scheherazade New,serif"
+                      font-size="13" fill="currentColor" opacity="0.8">{{ col.name.charAt(0) }}</text>
+                  </svg>
+                </div>
+                <div class="folder-name">{{ col.name }}</div>
+                <div class="folder-count">{{ col.khassidas_count ?? '—' }} images</div>
+              </div>
+            }
+          </div>
+        }
       }
-    </main>
 
-    <!-- SIDEBAR droite -->
-    <app-sidebar
-      [collections]="collections()"
-      [slides]="slides()"
-      [currentIndex]="currentIndex()"
-      [activeCollectionId]="activeCollectionId()"
-      (collectionSelect)="onCollectionSelect($event)"
-      (slideSelect)="onSlideSelect($event)"
-    />
+      <!-- ── VUE FICHIERS (khassidas d'un dossier) ── -->
+      @if (browserView() === 'files') {
 
-  </div>
+        <div class="files-header">
+          <button class="files-back" (click)="backToFolders()">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
+              <path d="M9 2L4 7l5 5V2z"/>
+            </svg>
+            Collections
+          </button>
+          <div class="files-breadcrumb">
+            <span class="files-breadcrumb-icon">✦</span>
+            <span class="files-breadcrumb-name">{{ browserOpenCollectionName() }}</span>
+          </div>
+          <button class="launch-btn launch-btn--sm" (click)="launchSlideshow(browserOpenCollectionId(), browserStartIndex())">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M4 2l8 5-8 5V2z"/></svg>
+            Lancer
+          </button>
+        </div>
+
+        @if (browserKhassidaLoading()) {
+          <div class="browser-loading">
+            <div class="browser-spinner"></div>
+            <span>Chargement des khassidas…</span>
+          </div>
+        } @else {
+          <div class="files-grid">
+            @for (slide of browserKhassidas(); track slide.id; let i = $index) {
+              <div class="file-card"
+                   [class.selected]="browserStartIndex() === i"
+                   (click)="browserStartIndex.set(i)"
+                   (dblclick)="launchSlideshow(browserOpenCollectionId(), i)">
+                <div class="file-thumb">
+                  <img [src]="imageUrl(slide)" [alt]="slide.title" loading="lazy"
+                       (error)="$any($event.target).style.display='none'"/>
+                  <div class="file-num">{{ i + 1 }}</div>
+                  @if (browserStartIndex() === i) {
+                    <div class="file-selected-overlay">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M5 4l12 6-12 6V4z"/>
+                      </svg>
+                    </div>
+                  }
+                </div>
+                <div class="file-title">{{ slide.title }}</div>
+              </div>
+            }
+          </div>
+
+          <div class="browser-launch">
+            <button class="launch-btn" (click)="launchSlideshow(browserOpenCollectionId(), browserStartIndex())">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
+                <path d="M5 3l11 6-11 6V3z"/>
+              </svg>
+              Lancer depuis la page {{ browserStartIndex() + 1 }}
+            </button>
+            <p class="launch-hint">double-cliquez sur une image pour lancer depuis celle-ci</p>
+          </div>
+        }
+      }
+
+    </div>
+  }
+
+  <!-- ══ VUE DIAPORAMA ══ -->
+  @if (appMode() === 'slideshow') {
+    <div class="layout">
+
+      <main class="main">
+        @if (loading()) {
+          <div class="loading">
+            <svg class="loading-mosque" width="120" height="90" viewBox="0 0 320 240" fill="none">
+              <ellipse cx="160" cy="80" rx="60" ry="52" fill="#d0a13b" opacity="0.2"/>
+              <ellipse cx="160" cy="80" rx="55" ry="47" fill="none" stroke="#d0a13b" stroke-width="1" opacity="0.5"/>
+              <rect x="100" y="80" width="120" height="50" fill="#d0a13b" opacity="0.15"/>
+              <rect x="152" y="28" width="16" height="52" fill="#d0a13b" opacity="0.25"/>
+              <polygon points="160,0 154,8 166,8" fill="#d0a13b" opacity="0.6"/>
+            </svg>
+            <div class="loading-title">طُوبَى</div>
+            <div class="loading-sub">Chargement des khassidas…</div>
+            <div class="loading-stars"><span>✦</span><span>✦</span><span>✦</span></div>
+          </div>
+        } @else {
+          <app-slideshow
+            [slides]="slides()"
+            [intervalMs]="5000"
+            (indexChange)="onIndexChange($event)"
+          />
+        }
+      </main>
+
+      <div class="sidebar-overlay" [class.visible]="sidebarOpen()" (click)="closeSidebar()"></div>
+      <div class="sidebar-wrap" [class.open]="sidebarOpen()">
+        <app-sidebar
+          [collections]="collections()"
+          [slides]="slides()"
+          [currentIndex]="currentIndex()"
+          [activeCollectionId]="activeCollectionId()"
+          (collectionSelect)="onCollectionSelect($event)"
+          (slideSelect)="onSlideSelect($event)"
+        />
+      </div>
+
+    </div>
+  }
+
 </div>

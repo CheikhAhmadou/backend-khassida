@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { Khassida } from '../../models/collection.model';
 import { ApiService } from '../../services/api';
 
-export type TransitionType = 'fade-zoom' | 'slide-up' | 'slide-right' | 'dissolve';
+export type TransitionType = 'fade-zoom' | 'slide-up' | 'slide-right' | 'dissolve' | 'flip' | 'rotate-in' | 'iris' | 'curtain' | 'blur-rise';
 
 @Component({
   selector: 'app-slideshow',
@@ -48,16 +48,18 @@ export class SlideshowComponent implements OnInit, AfterViewInit, OnDestroy {
 
   _slides    = signal<Khassida[]>([]);
   isFullscreen = signal(false);
+  isCinema     = signal(false);
+  private cinemaMode = false;
   currentIndex = signal(0);
   prevIndex    = signal<number | null>(null);
-  isPlaying    = signal(true);
+  isPlaying    = signal(false);
   progress     = signal(0);
   animating    = signal(false);
   transition   = signal<TransitionType>('fade-zoom');
 
-  private transitions: TransitionType[] = ['fade-zoom', 'slide-up', 'slide-right', 'dissolve'];
+  private transitions: TransitionType[] = ['fade-zoom', 'slide-up', 'slide-right', 'dissolve', 'flip', 'rotate-in', 'iris', 'curtain', 'blur-rise'];
   private transitionIdx = 0;
-  private ANIM_MS = 700;
+  private ANIM_MS = 850;
 
   current  = computed(() => this._slides()[this.currentIndex()] ?? null);
   previous = computed(() => this.prevIndex() !== null ? (this._slides()[this.prevIndex()!] ?? null) : null);
@@ -181,6 +183,16 @@ export class SlideshowComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   toggleFullscreen(): void {
+    this.cinemaMode = false;
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  toggleCinema(): void {
+    this.cinemaMode = true;
     if (!document.fullscreenElement) {
       this.el.nativeElement.requestFullscreen();
     } else {
@@ -190,13 +202,17 @@ export class SlideshowComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @HostListener('document:fullscreenchange')
   onFullscreenChange(): void {
-    this.isFullscreen.set(!!document.fullscreenElement);
+    const active = !!document.fullscreenElement;
+    this.isFullscreen.set(active);
+    this.isCinema.set(active && this.cinemaMode);
+    if (!active) this.cinemaMode = false;
   }
 
   @HostListener('document:keydown', ['$event'])
   onKeydown(e: KeyboardEvent): void {
     if (e.target instanceof HTMLInputElement) return;
     if (e.key === 'f' || e.key === 'F') this.toggleFullscreen();
+    if (e.key === 'c' || e.key === 'C') this.toggleCinema();
     if (e.key === 'ArrowRight') this.advance(1);
     if (e.key === 'ArrowLeft') this.advance(-1);
     if (e.key === ' ') { e.preventDefault(); this.togglePlay(); }

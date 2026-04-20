@@ -38,6 +38,8 @@
           ← Collections
         </button>
       }
+      <a routerLink="/kourel" class="nav-btn-admin nav-btn-admin--desktop">Kourel</a>
+      <a routerLink="/page" class="nav-btn-admin nav-btn-admin--desktop">PDF</a>
       <a routerLink="/admin" class="nav-btn-admin nav-btn-admin--desktop">Admin</a>
 
       <button class="nav-burger" (click)="toggleSidebar()" [class.open]="sidebarOpen()">
@@ -99,8 +101,87 @@
                 <div class="folder-count">{{ col.khassidas_count ?? '—' }} images</div>
               </div>
             }
+
+            <!-- Dossier Kourel -->
+            <div class="folder folder--kourel" (click)="openKourel()">
+              <div class="folder-icon folder-icon--kourel">
+                <svg viewBox="0 0 56 48" fill="none">
+                  <path d="M2,12 L2,44 Q2,46 4,46 L52,46 Q54,46 54,44 L54,16 Q54,14 52,14 L28,14 L24,10 Q23,8 21,8 L4,8 Q2,8 2,10 Z" fill="currentColor" opacity="0.18"/>
+                  <path d="M2,16 L2,44 Q2,46 4,46 L52,46 Q54,46 54,44 L54,18 Q54,16 52,16 Z" fill="currentColor" opacity="0.30"/>
+                  <text x="28" y="38" text-anchor="middle" font-family="Cinzel,serif"
+                    font-size="9" fill="currentColor" opacity="0.85" font-weight="600">PDF</text>
+                </svg>
+              </div>
+              <div class="folder-name">Collections Kourel</div>
+              <div class="folder-count">{{ kourelCollections().length }} kourels · PDF</div>
+            </div>
+
           </div>
         }
+      }
+
+      <!-- ── VUE KOUREL (liste des collections) ── -->
+      @if (browserView() === 'kourel') {
+        <div class="files-header">
+          <button class="files-back" (click)="backToFolders()">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M9 2L4 7l5 5V2z"/></svg>
+            Accueil
+          </button>
+          <div class="files-breadcrumb">
+            <span class="files-breadcrumb-icon">✦</span>
+            <span class="files-breadcrumb-name">Collections Kourel</span>
+          </div>
+        </div>
+        <div class="browser-grid">
+          @for (col of kourelCollections(); track col.name) {
+            <div class="folder folder--kourel" (click)="openKourelCollection(col)">
+              <div class="folder-icon folder-icon--kourel">
+                <svg viewBox="0 0 56 48" fill="none">
+                  <path d="M2,12 L2,44 Q2,46 4,46 L52,46 Q54,46 54,44 L54,16 Q54,14 52,14 L28,14 L24,10 Q23,8 21,8 L4,8 Q2,8 2,10 Z" fill="currentColor" opacity="0.18"/>
+                  <path d="M2,16 L2,44 Q2,46 4,46 L52,46 Q54,46 54,44 L54,18 Q54,16 52,16 Z" fill="currentColor" opacity="0.30"/>
+                  <text x="28" y="38" text-anchor="middle" font-family="Cinzel,serif"
+                    font-size="9" fill="currentColor" opacity="0.85" font-weight="600">PDF</text>
+                </svg>
+              </div>
+              <div class="folder-name">{{ col.name }}</div>
+              <div class="folder-count">{{ col.pdfs.length }} khassidas</div>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- ── VUE PDFs D'UN KOUREL ── -->
+      @if (browserView() === 'kourel-pdfs') {
+        <div class="files-header">
+          <button class="files-back" (click)="browserView.set('kourel')">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M9 2L4 7l5 5V2z"/></svg>
+            Kourel
+          </button>
+          <div class="files-breadcrumb">
+            <span class="files-breadcrumb-icon">✦</span>
+            <span class="files-breadcrumb-name">{{ activeKourelCollection()?.name }}</span>
+          </div>
+        </div>
+        <div class="kourel-pdf-list">
+          @for (pdf of activeKourelCollection()?.pdfs ?? []; track pdf.filename; let i = $index) {
+            <div class="kourel-pdf-item" (click)="openKourelPdf(pdf)">
+              <div class="kourel-pdf-num">{{ i + 1 }}</div>
+              <div class="kourel-pdf-icon">
+                <svg viewBox="0 0 40 48" fill="none">
+                  <path d="M4,2 L28,2 L38,12 L38,46 L4,46 Z" fill="currentColor" opacity="0.1" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+                  <path d="M28,2 L28,12 L38,12" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+                  <line x1="10" y1="20" x2="32" y2="20" stroke="currentColor" stroke-width="0.7" opacity="0.3"/>
+                  <line x1="10" y1="27" x2="32" y2="27" stroke="currentColor" stroke-width="0.7" opacity="0.3"/>
+                  <line x1="10" y1="34" x2="24" y2="34" stroke="currentColor" stroke-width="0.7" opacity="0.3"/>
+                </svg>
+              </div>
+              <div class="kourel-pdf-label">{{ pdf.label }}</div>
+              <div class="kourel-pdf-arrow">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M5 2l5 5-5 5V2z"/></svg>
+              </div>
+            </div>
+          }
+        </div>
       }
 
       <!-- ── VUE FICHIERS (khassidas d'un dossier) ── -->

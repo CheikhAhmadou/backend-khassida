@@ -1,0 +1,247 @@
+@import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Cinzel:wght@400;600&family=Inter:wght@300;400;500&display=swap');
+
+$bg:    #011714;
+$gold:  #d0a13b;
+$gold-f: rgba(208,161,59,0.12);
+$gold-b: rgba(208,161,59,0.22);
+$border: rgba(208,161,59,0.2);
+$muted:  rgba(245,220,160,0.45);
+
+@keyframes gold-flow {
+  0%,100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+@keyframes star-pulse {
+  0%,100% { opacity: 0.6; text-shadow: 0 0 6px rgba(208,161,59,0.4); }
+  50%      { opacity: 1;   text-shadow: 0 0 18px rgba(208,161,59,1); }
+}
+@keyframes card-glow {
+  0%,100% { opacity: 0; }
+  50%      { opacity: 1; }
+}
+
+/* ══ SHELL ══ */
+.kourel-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: radial-gradient(ellipse at 50% 30%, #012520 0%, #011714 55%, #010b09 100%);
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.kourel-bg-geo {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ══ NAV ══ */
+.kourel-nav {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(12px, 2vw, 28px);
+  height: 48px;
+  background: linear-gradient(to right, #010a08, #011e1a, #012520, #011e1a, #010a08);
+  border-bottom: 1px solid $border;
+  flex-shrink: 0;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(to right, transparent, $gold, transparent);
+    opacity: 0.4;
+  }
+}
+
+.kourel-nav-brand { display: flex; align-items: center; gap: 10px; }
+
+.kourel-nav-back {
+  display: flex; align-items: center; gap: 5px;
+  color: $gold; text-decoration: none; font-size: 11px;
+  padding: 4px 10px; border-radius: 6px;
+  background: $gold-f; border: 0.5px solid $border;
+  letter-spacing: 0.04em; transition: background 0.15s;
+  &:hover { background: $gold-b; }
+}
+
+.kourel-nav-sep { color: $gold; font-size: 10px; opacity: 0.5; animation: star-pulse 3s ease-in-out infinite; }
+
+.kourel-nav-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(11px, 1.1vw, 14px);
+  color: rgba(208,161,59,0.8);
+  letter-spacing: 0.08em;
+}
+
+.kourel-nav-callig {
+  font-family: 'Scheherazade New', serif;
+  font-size: clamp(11px, 1vw, 14px);
+  color: rgba(208,161,59,0.25);
+  direction: rtl;
+  @media (max-width: 768px) { display: none; }
+}
+
+.kourel-nav-logo {
+  display: flex; align-items: center; gap: 8px;
+}
+
+.kourel-logo-img {
+  height: 30px; width: auto;
+  filter: drop-shadow(0 0 6px rgba(208,161,59,0.4));
+}
+
+.kourel-logo-name {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(9px, 0.8vw, 11px);
+  color: rgba(208,161,59,0.6);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  @media (max-width: 640px) { display: none; }
+}
+
+/* ══ HERO ══ */
+.kourel-hero {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: clamp(24px, 4vh, 48px) 20px clamp(16px, 3vh, 32px);
+}
+
+.kourel-hero-ornament {
+  display: flex; align-items: center; gap: 14px;
+}
+
+.kourel-hero-line {
+  width: clamp(40px, 8vw, 100px); height: 1px;
+  background: linear-gradient(to right, transparent, rgba(208,161,59,0.5), transparent);
+}
+
+.kourel-hero-star {
+  color: $gold; font-size: 14px;
+  animation: star-pulse 3s ease-in-out infinite;
+}
+
+.kourel-hero-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(18px, 2.5vw, 32px);
+  font-weight: 600;
+  background: linear-gradient(135deg, #c8983a 0%, #f0d060 45%, #d0a13b 55%, #a07820 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gold-flow 5s ease-in-out infinite;
+  letter-spacing: 0.06em;
+  text-align: center;
+  margin: 0;
+}
+
+.kourel-hero-sub {
+  font-size: clamp(11px, 1vw, 13px);
+  color: $muted;
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+/* ══ GRILLE ══ */
+.kourel-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(200px, 22vw, 280px), 1fr));
+  gap: clamp(12px, 2vw, 24px);
+  padding: 0 clamp(16px, 4vw, 60px) clamp(32px, 5vh, 60px);
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ── Carte PDF ── */
+.kourel-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: clamp(14px, 2vh, 20px) clamp(16px, 2vw, 22px);
+  background: rgba(208,161,59,0.04);
+  border: 1px solid rgba(208,161,59,0.18);
+  border-radius: 8px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    border-color: rgba(208,161,59,0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 20px rgba(208,161,59,0.12);
+
+    .kourel-card-glow { animation: card-glow 2s ease-in-out infinite; }
+    .kourel-card-icon { color: $gold; }
+    .kourel-card-open { color: $gold; opacity: 1; }
+  }
+}
+
+.kourel-card-num {
+  position: absolute;
+  top: 8px; right: 12px;
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  color: rgba(208,161,59,0.3);
+  letter-spacing: 0.06em;
+}
+
+.kourel-card-icon {
+  width: clamp(36px, 4vw, 52px);
+  flex-shrink: 0;
+  color: rgba(208,161,59,0.5);
+  transition: color 0.2s;
+
+  svg { width: 100%; height: auto; }
+}
+
+.kourel-card-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kourel-card-name {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(12px, 1.1vw, 15px);
+  color: rgba(245,220,160,0.88);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kourel-card-open {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 10px;
+  color: rgba(208,161,59,0.45);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  transition: all 0.2s;
+}
+
+.kourel-card-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(208,161,59,0.07) 0%, transparent 70%);
+  pointer-events: none;
+  opacity: 0;
+}

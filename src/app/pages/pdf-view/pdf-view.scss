@@ -1,0 +1,880 @@
+@import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Cinzel:wght@400;600&family=Inter:wght@300;400;500&display=swap');
+
+$bg:      #011714;
+$bg-mid:  #011e1a;
+$gold:    #d0a13b;
+$gold-f:  rgba(208,161,59,0.12);
+$gold-b:  rgba(208,161,59,0.22);
+$border:  rgba(208,161,59,0.2);
+$cream:   #f5e8c0;
+$muted:   rgba(245,220,160,0.4);
+
+@keyframes title-shine {
+  0%   { background-position: 0% 50%;   letter-spacing: 0.02em; filter: drop-shadow(0 0 4px rgba(208,161,59,0.3)); }
+  25%  { background-position: 50% 50%;  letter-spacing: 0.06em; filter: drop-shadow(0 0 14px rgba(240,210,80,0.7)); }
+  50%  { background-position: 100% 50%; letter-spacing: 0.02em; filter: drop-shadow(0 0 24px rgba(208,161,59,0.9)); }
+  75%  { background-position: 50% 50%;  letter-spacing: 0.06em; filter: drop-shadow(0 0 14px rgba(240,210,80,0.7)); }
+  100% { background-position: 0% 50%;   letter-spacing: 0.02em; filter: drop-shadow(0 0 4px rgba(208,161,59,0.3)); }
+}
+@keyframes title-fr-pulse {
+  0%, 100% { opacity: 0.75; letter-spacing: 0.18em; }
+  50%       { opacity: 1;    letter-spacing: 0.24em; text-shadow: 0 0 16px rgba(208,161,59,0.5); }
+}
+@keyframes portrait-float {
+  0%, 100% { transform: translateY(0px) scale(1);    filter: drop-shadow(0 0 8px rgba(208,161,59,0.35)); }
+  50%       { transform: translateY(-6px) scale(1.02); filter: drop-shadow(0 0 18px rgba(208,161,59,0.65)); }
+}
+@keyframes portrait-glow {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50%       { opacity: 0.65; transform: scale(1.08); }
+}
+@keyframes gold-flow {
+  0%,100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+@keyframes spin        { to   { transform: rotate(360deg); } }
+@keyframes star-pulse  {
+  0%,100% { text-shadow: 0 0 6px rgba(208,161,59,0.5); opacity: 0.7; }
+  50%      { text-shadow: 0 0 18px rgba(208,161,59,1), 0 0 32px rgba(208,161,59,0.4); opacity: 1; }
+}
+@keyframes page-appear {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ══ SHELL ══ */
+.pdf-shell {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: radial-gradient(ellipse at 50% 40%, #012520 0%, #011714 55%, #010b09 100%);
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+.pdf-bg-geo {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.pdf-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(ellipse at 50% 50%,
+    transparent 40%,
+    rgba(1,10,8,0.4) 75%,
+    rgba(1,10,8,0.75) 100%);
+}
+
+/* ══ NAV ══ */
+.pdf-nav {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(12px, 2vw, 28px);
+  height: 42px;
+  background: linear-gradient(to right, #010a08, #011e1a, #012520, #011e1a, #010a08);
+  border-bottom: 1px solid $border;
+  flex-shrink: 0;
+  box-shadow: 0 3px 20px rgba(0,0,0,0.5);
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(to right, transparent, $gold, transparent);
+    opacity: 0.5;
+  }
+}
+
+.pdf-nav-brand { display: flex; align-items: center; gap: 12px; }
+
+.pdf-nav-back {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: $gold;
+  text-decoration: none;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: $gold-f;
+  border: 0.5px solid $border;
+  letter-spacing: 0.04em;
+  transition: background 0.15s;
+  &:hover { background: $gold-b; }
+}
+
+.pdf-nav-sep {
+  color: $gold;
+  font-size: 10px;
+  opacity: 0.5;
+  animation: star-pulse 3s ease-in-out infinite;
+}
+
+.pdf-nav-title {
+  font-family: 'Scheherazade New', serif;
+  font-size: clamp(14px, 1.5vw, 20px);
+  font-weight: 700;
+  direction: rtl;
+  background: linear-gradient(135deg, #011714 0%, #022e20 35%, #d0a13b 50%, #022e20 65%, #011714 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gold-flow 4s ease-in-out infinite;
+}
+
+.pdf-nav-callig {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Scheherazade New', serif;
+  font-size: clamp(11px, 1.1vw, 14px);
+  color: rgba(208,161,59,0.28);
+  direction: rtl;
+  white-space: nowrap;
+  display: none;
+  @media (min-width: 768px) { display: block; }
+}
+
+.pdf-nav-actions { display: flex; align-items: center; gap: 10px; }
+
+.pdf-nav-badge {
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: $gold-f;
+  border: 0.5px solid $border;
+  color: $gold;
+  letter-spacing: 0.06em;
+}
+
+.pdf-nav-btn {
+  width: 30px; height: 30px;
+  border-radius: 7px;
+  background: $gold-f;
+  border: 0.5px solid $border;
+  color: rgba(208,161,59,0.7);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  &:hover { background: $gold-b; color: $gold; }
+}
+
+/* ══ BODY ══ */
+.pdf-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  padding: 0;
+}
+
+/* ── LOADING ── */
+.pdf-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  z-index: 30;
+}
+
+.pdf-loading-ornament {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pdf-loading-line {
+  width: 60px; height: 1px;
+  background: linear-gradient(to right, transparent, rgba(208,161,59,0.5), transparent);
+}
+
+.pdf-loading-star {
+  color: $gold;
+  font-size: 13px;
+  animation: star-pulse 2s ease-in-out infinite;
+}
+
+.pdf-loading-ring {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(208,161,59,0.15);
+  border-top-color: $gold;
+  animation: spin 1s linear infinite;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.pdf-loading-ring-inner {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(208,161,59,0.1);
+  border-bottom-color: rgba(208,161,59,0.5);
+  animation: spin 1.5s linear infinite reverse;
+}
+
+.pdf-loading-title {
+  font-family: 'Scheherazade New', serif;
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 700;
+  color: $gold;
+  direction: rtl;
+  text-shadow: 0 0 24px rgba(208,161,59,0.5);
+}
+
+.pdf-loading-sub {
+  font-size: 12px;
+  color: $muted;
+  letter-spacing: 0.1em;
+}
+
+/* ── ERREUR ── */
+.pdf-error {
+  position: absolute;
+  inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: #e07060;
+  font-size: 14px;
+  z-index: 30;
+}
+
+/* ── FLÈCHES ── */
+.pdf-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: clamp(34px, 3vw, 48px);
+  height: clamp(34px, 3vw, 48px);
+  border-radius: 50%;
+  background: rgba(1,23,20,0.75);
+  border: 1px solid $border;
+  color: rgba(208,161,59,0.6);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.18s;
+  backdrop-filter: blur(4px);
+
+  &--left  { left: 4px; }
+  &--right { right: 4px; }
+
+  &:hover:not(:disabled) {
+    background: rgba(208,161,59,0.2);
+    color: $gold;
+    border-color: rgba(208,161,59,0.6);
+    box-shadow: 0 0 16px rgba(208,161,59,0.3);
+    transform: translateY(-50%) scale(1.08);
+  }
+  &:disabled { opacity: 0.15; cursor: default; }
+}
+
+/* ══ LIVRE ══ */
+.pdf-book {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: page-appear 0.6s ease both;
+  position: relative;
+}
+
+/* Cadre extérieur — s'adapte à la taille réelle des pages */
+.pdf-book-frame {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 4px;
+  border: 1px solid rgba(208,161,59,0.35);
+  border-radius: 4px;
+  background: rgba(208,161,59,0.03);
+  box-shadow:
+    0 0 0 3px rgba(208,161,59,0.05),
+    0 12px 60px rgba(0,0,0,0.6),
+    0 0 80px rgba(208,161,59,0.06);
+
+  /* Ligne déco intérieure */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 0.5px solid rgba(208,161,59,0.12);
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+/* Coins ornementaux */
+.book-corner {
+  position: absolute;
+  width: 36px; height: 36px;
+  z-index: 2;
+  pointer-events: none;
+
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    border-radius: 1px;
+  }
+  &::before { width: 2px; height: 36px; background: linear-gradient(to bottom, #f0d060, $gold 60%, transparent); }
+  &::after  { width: 36px; height: 2px; background: linear-gradient(to right,  #f0d060, $gold 60%, transparent); }
+
+  &.book-corner-tl { top: -1px; left: -1px; }
+  &.book-corner-tr {
+    top: -1px; right: -1px;
+    &::before { right: 0; left: auto; }
+    &::after  { right: 0; left: auto; background: linear-gradient(to left, #f0d060, $gold 60%, transparent); }
+  }
+  &.book-corner-bl {
+    bottom: -1px; left: -1px;
+    &::before { bottom: 0; top: auto; background: linear-gradient(to top, #f0d060, $gold 60%, transparent); }
+  }
+  &.book-corner-br {
+    bottom: -1px; right: -1px;
+    &::before { right: 0; left: auto; bottom: 0; top: auto; background: linear-gradient(to top, #f0d060, $gold 60%, transparent); }
+    &::after  { right: 0; left: auto; bottom: 0; top: auto; background: linear-gradient(to left, #f0d060, $gold 60%, transparent); }
+  }
+}
+
+/* Étoiles sur les côtés */
+.book-side-star {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: $gold;
+  animation: star-pulse 3s ease-in-out infinite;
+  z-index: 3;
+  &--top    { top: -8px; }
+  &--bottom { bottom: -8px; }
+}
+
+/* Ligne dorée bas du cadre */
+.book-bottom-line { display: none; }
+
+/* ── DOUBLE PAGE ── */
+.pdf-spread {
+  display: flex;
+  align-items: stretch;
+}
+
+.pdf-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.pdf-page-inner {
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow:
+    0 8px 48px rgba(0,0,0,0.55),
+    0 2px 8px rgba(0,0,0,0.3),
+    0 0 0 1px rgba(208,161,59,0.18);
+  background: #e8d9a8;
+  line-height: 0;
+
+  canvas {
+    display: block;
+    filter: sepia(0.35) brightness(0.97) saturate(0.95) contrast(1.03);
+  }
+}
+
+.pdf-page--left .pdf-page-inner { border-radius: 2px 0 0 2px; }
+.pdf-page--right .pdf-page-inner { border-radius: 0 2px 2px 2px; }
+
+.pdf-page-num {
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  color: rgba(208,161,59,0.35);
+  letter-spacing: 0.08em;
+  font-family: 'Cinzel', serif;
+  pointer-events: none;
+}
+
+/* ── RELIURE (SPINE) ── */
+.pdf-spine {
+  width: clamp(18px, 2vw, 28px);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+  background: linear-gradient(to bottom,
+    #010a08 0%,
+    #022e20 15%,
+    #013020 50%,
+    #022e20 85%,
+    #010a08 100%);
+  border-left:  1px solid rgba(208,161,59,0.35);
+  border-right: 1px solid rgba(208,161,59,0.35);
+  box-shadow:
+    inset 2px 0 6px rgba(208,161,59,0.08),
+    inset -2px 0 6px rgba(208,161,59,0.08),
+    0 0 12px rgba(208,161,59,0.12);
+  position: relative;
+  z-index: 2;
+}
+
+.pdf-spine-top-star,
+.pdf-spine-bottom-star {
+  font-size: 9px;
+  color: $gold;
+  animation: star-pulse 3s ease-in-out infinite;
+  flex-shrink: 0;
+}
+.pdf-spine-bottom-star { animation-delay: 1.5s; }
+
+.pdf-spine-line {
+  flex: 1;
+  width: 1px;
+  background: linear-gradient(to bottom, rgba(208,161,59,0.4), rgba(208,161,59,0.6), rgba(208,161,59,0.4));
+}
+
+.pdf-spine-mid {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pdf-spine-diamond {
+  width: 8px; height: 8px;
+  background: $gold;
+  transform: rotate(45deg);
+  box-shadow: 0 0 8px rgba(208,161,59,0.7);
+  animation: star-pulse 2s ease-in-out infinite;
+}
+
+/* ── CAPTION BAS DU LIVRE ── */
+.pdf-book-caption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 6px;
+  font-family: 'Scheherazade New', serif;
+  font-size: clamp(9px, 0.8vw, 11px);
+  color: rgba(208,161,59,0.3);
+  direction: rtl;
+  white-space: nowrap;
+}
+
+.pdf-book-caption-dot {
+  font-size: 9px;
+  animation: star-pulse 3s ease-in-out infinite;
+}
+
+/* ── SIGNATURE ── */
+.pdf-book-sig {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(10px, 1vw, 13px);
+  color: rgba(208,161,59,0.55);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 2px;
+  animation: title-fr-pulse 4s ease-in-out infinite;
+}
+
+/* ── TITRE DU MANUSCRIT ── */
+.pdf-book-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  margin-top: 8px;
+}
+
+.pdf-book-title-ornament {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+}
+
+.pdf-book-title-line {
+  flex: 1;
+  max-width: 80px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(208,161,59,0.45), transparent);
+}
+
+.pdf-book-title-star {
+  font-size: 10px;
+  color: $gold;
+  animation: star-pulse 3s ease-in-out infinite;
+}
+
+.pdf-book-title-ar {
+  font-family: 'Scheherazade New', serif;
+  font-size: clamp(22px, 2.8vw, 32px);
+  font-weight: 700;
+  direction: rtl;
+  background: linear-gradient(135deg, #c8983a 0%, #f0d060 40%, #d0a13b 60%, #a07820 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: title-shine 4s ease-in-out infinite;
+  letter-spacing: 0.02em;
+}
+
+.pdf-book-title-fr {
+  font-size: clamp(14px, 1.4vw, 18px);
+  color: rgba(245, 225, 170, 0.92);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  animation: title-fr-pulse 3s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+/* ══ PANNEAUX LATÉRAUX ══ */
+.pdf-side {
+  width: clamp(48px, 6vw, 88px);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 16px 0;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 16px; bottom: 16px;
+    width: 1px;
+    background: linear-gradient(to bottom,
+      transparent,
+      rgba(208,161,59,0.15) 20%,
+      rgba(208,161,59,0.2) 50%,
+      rgba(208,161,59,0.15) 80%,
+      transparent);
+  }
+}
+
+.pdf-side-star {
+  font-size: 11px;
+  color: rgba(208,161,59,0.55);
+  animation: star-pulse 3s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.pdf-side-vline {
+  flex: 1;
+  width: 1px;
+  background: linear-gradient(to bottom,
+    rgba(208,161,59,0.12),
+    rgba(208,161,59,0.25),
+    rgba(208,161,59,0.12));
+  min-height: 20px;
+}
+
+.pdf-side-callig {
+  font-family: 'Scheherazade New', serif;
+  font-size: clamp(10px, 1.1vw, 14px);
+  color: rgba(208,161,59,0.4);
+  direction: rtl;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 0.06em;
+  padding: 10px 0;
+  flex-shrink: 0;
+}
+
+.pdf-side-diamond {
+  width: 7px; height: 7px;
+  background: rgba(208,161,59,0.35);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+  margin: 6px 0;
+  box-shadow: 0 0 6px rgba(208,161,59,0.3);
+  animation: star-pulse 4s ease-in-out infinite;
+}
+
+.pdf-side-geo {
+  flex-shrink: 0;
+  padding: 8px 0;
+  opacity: 0.7;
+  animation: star-pulse 5s ease-in-out infinite;
+}
+
+/* Portrait animé */
+.pdf-side-portrait {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-bottom: 4px;
+}
+
+.pdf-side-portrait-img {
+  width: clamp(80px, 10vw, 140px);
+  margin-left: 260px;
+  height: auto;
+  object-fit: contain;
+  filter: invert(1) sepia(0.4) hue-rotate(30deg) brightness(0.85) saturate(1.2);
+  mix-blend-mode: screen;
+  animation: portrait-float 5s ease-in-out infinite;
+  position: relative;
+  z-index: 2;
+}
+
+.pdf-side-portrait-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 40%, rgba(208,161,59,0.35) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: portrait-glow 5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ── SIGNATURE DIAWARTOULAH ── */
+.pdf-side-sig {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-top: 8px;
+  margin-left: 120px;
+  flex-shrink: 0;
+}
+
+.pdf-side-sig-logo {
+  width: clamp(36px, 4.5vw, 64px);
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(208,161,59,0.4));
+  animation: portrait-float 6s ease-in-out infinite;
+}
+
+.pdf-side-sig-name {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(7px, 0.65vw, 9px);
+  color: rgba(208,161,59,0.7);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  animation: title-fr-pulse 4s ease-in-out infinite;
+}
+
+.pdf-side-sig-city {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(6px, 0.55vw, 8px);
+  color: rgba(208,161,59,0.45);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ══ CONTRÔLES ══ */
+.pdf-controls {
+  position: relative;
+  z-index: 10;
+  height: 42px;
+  background: linear-gradient(to right, #010a08, #011e1a, #012520, #011e1a, #010a08);
+  border-top: 1px solid $border;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 20px;
+  flex-shrink: 0;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(208,161,59,0.08);
+}
+
+.pdf-ctrl-btn {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: $gold-f;
+  border: 0.5px solid $border;
+  color: rgba(208,161,59,0.6);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  flex-shrink: 0;
+
+  &:hover:not(:disabled) {
+    background: $gold-b;
+    color: $gold;
+    border-color: rgba(208,161,59,0.5);
+    box-shadow: 0 0 10px rgba(208,161,59,0.2);
+  }
+  &:disabled { opacity: 0.25; cursor: default; }
+}
+
+.pdf-ctrl-sep {
+  width: 1px; height: 20px;
+  background: $border;
+  flex-shrink: 0;
+}
+
+/* Chapelet */
+.pdf-pager {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 65vw;
+  overflow: hidden;
+  max-height: 22px;
+}
+
+.pdf-bead {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: rgba(208,161,59,0.18);
+  border: 0.5px solid rgba(208,161,59,0.35);
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
+  flex-shrink: 0;
+
+  &.active {
+    background: $gold;
+    transform: scale(1.7);
+    box-shadow: 0 0 8px rgba(208,161,59,0.8);
+  }
+  &:hover:not(.active) { background: rgba(208,161,59,0.5); }
+}
+
+.pdf-counter {
+  font-size: 10px;
+  color: $muted;
+  white-space: nowrap;
+  letter-spacing: 0.08em;
+  font-family: 'Cinzel', serif;
+  flex-shrink: 0;
+}
+
+/* ══ UTILS ══ */
+.hidden    { visibility: hidden; pointer-events: none; }
+.invisible { visibility: hidden; }
+
+/* ══ RESPONSIVE ══ */
+
+/* ── Mobile (< 640px) ── */
+@media (max-width: 639px) {
+  .pdf-nav { padding: 0 10px; height: 38px; }
+  .pdf-nav-title { font-size: 13px; }
+  .pdf-nav-callig { display: none; }
+  .pdf-nav-badge { display: none; }
+
+  .pdf-side { display: none; }
+
+  .pdf-book-title-ar { font-size: 16px; }
+  .pdf-book-title-fr { font-size: 9px; letter-spacing: 0.1em; }
+  .pdf-book-title { margin-top: 4px; gap: 2px; }
+  .pdf-book-title-line { max-width: 40px; }
+
+  .pdf-arrow {
+    width: 38px; height: 38px;
+    &--left  { left: 2px; }
+    &--right { right: 2px; }
+  }
+
+  .pdf-controls { height: 38px; gap: 6px; padding: 0 8px; }
+  .pdf-ctrl-btn { width: 28px; height: 28px; }
+  .pdf-pager { max-width: 55vw; gap: 3px; }
+  .pdf-bead { width: 6px; height: 6px; }
+
+  .pdf-spine { width: 16px; }
+}
+
+/* ── Tablette (640px – 1023px) ── */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .pdf-side {
+    width: clamp(44px, 6vw, 70px);
+    padding: 10px 0;
+  }
+  .pdf-side-callig { font-size: 10px; padding: 6px 0; }
+  .pdf-side-geo svg { width: 36px; height: 36px; }
+  .pdf-side-sig-logo { width: clamp(28px, 4vw, 48px); }
+  .pdf-side-sig-name { font-size: 7px; }
+  .pdf-side-sig-city { font-size: 6px; }
+  .pdf-side-sig { margin-left: 8px; }
+
+  .pdf-book-title-ar { font-size: clamp(16px, 2.2vw, 22px); }
+  .pdf-book-title-fr { font-size: clamp(10px, 1.1vw, 13px); }
+
+  .pdf-nav-callig { display: none; }
+}
+
+/* ── Grand écran 32" (1920px – 2559px) ── */
+@media (min-width: 1920px) {
+  .pdf-nav { height: 52px; }
+  .pdf-nav-title { font-size: clamp(18px, 1.4vw, 26px); }
+  .pdf-nav-callig { font-size: clamp(13px, 0.9vw, 17px); }
+
+  .pdf-side { width: clamp(90px, 7vw, 120px); }
+  .pdf-side-callig { font-size: clamp(13px, 1vw, 16px); }
+  .pdf-side-geo svg { width: 64px; height: 64px; }
+  .pdf-side-sig-logo { width: clamp(54px, 4vw, 80px); }
+  .pdf-side-sig-name { font-size: clamp(10px, 0.6vw, 13px); }
+  .pdf-side-sig-city { font-size: clamp(9px, 0.5vw, 11px); }
+
+  .pdf-book-title-ar { font-size: clamp(28px, 2.2vw, 40px); }
+  .pdf-book-title-fr { font-size: clamp(16px, 1.1vw, 22px); }
+
+  .pdf-controls { height: 52px; }
+  .pdf-ctrl-btn { width: 40px; height: 40px; }
+  .pdf-bead { width: 9px; height: 9px; }
+
+  .pdf-spine { width: clamp(24px, 2vw, 36px); }
+}
+
+/* ── Très grand écran 55"/65" (≥ 2560px) ── */
+@media (min-width: 2560px) {
+  .pdf-nav { height: 64px; }
+  .pdf-nav-title { font-size: clamp(22px, 1.2vw, 32px); }
+
+  .pdf-side { width: clamp(120px, 7vw, 160px); }
+  .pdf-side-callig { font-size: clamp(16px, 0.9vw, 22px); }
+  .pdf-side-geo svg { width: 80px; height: 80px; }
+  .pdf-side-sig-logo { width: clamp(70px, 4vw, 110px); }
+  .pdf-side-sig-name { font-size: clamp(12px, 0.55vw, 16px); }
+  .pdf-side-sig-city { font-size: clamp(10px, 0.45vw, 14px); }
+  .pdf-side-sig { margin-left: 60px; }
+
+  .pdf-book-title-ar { font-size: clamp(36px, 2vw, 54px); }
+  .pdf-book-title-fr { font-size: clamp(20px, 1vw, 28px); }
+
+  .pdf-controls { height: 64px; gap: 16px; }
+  .pdf-ctrl-btn { width: 48px; height: 48px; }
+  .pdf-bead { width: 11px; height: 11px; }
+  .pdf-counter { font-size: 13px; }
+
+  .pdf-arrow { width: 64px; height: 64px; }
+  .pdf-spine { width: clamp(30px, 2vw, 48px); }
+}

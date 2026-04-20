@@ -1,0 +1,226 @@
+<div class="pdf-shell">
+
+  <!-- Fond géométrique islamique -->
+  <div class="pdf-bg-geo">
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <pattern id="geo" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+          <polygon points="40,4 76,22 76,58 40,76 4,58 4,22" fill="none" stroke="#d0a13b" stroke-width="0.4" opacity="0.12"/>
+          <polygon points="40,16 64,30 64,50 40,64 16,50 16,30" fill="none" stroke="#d0a13b" stroke-width="0.3" opacity="0.08"/>
+          <circle cx="40" cy="40" r="6" fill="none" stroke="#d0a13b" stroke-width="0.3" opacity="0.08"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#geo)"/>
+    </svg>
+  </div>
+  <div class="pdf-vignette"></div>
+
+  <!-- ── NAV ── -->
+  <nav class="pdf-nav">
+    <div class="pdf-nav-brand">
+      <a [routerLink]="backUrl()" class="pdf-nav-back">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="currentColor"><path d="M9 2L4 7l5 5V2z"/></svg>
+        Accueil
+      </a>
+      <div class="pdf-nav-sep">✦</div>
+      <div class="pdf-nav-title">{{ pdfName() }}</div>
+    </div>
+
+    <div class="pdf-nav-callig">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+
+    <div class="pdf-nav-actions">
+      @if (!loading() && !error()) {
+        <span class="pdf-nav-badge">
+          {{ leftPage() }}–{{ rightPage() <= totalPages() ? rightPage() : totalPages() }}
+          &nbsp;/&nbsp; {{ totalPages() }}
+        </span>
+      }
+      <button class="pdf-nav-btn" (click)="toggleFullscreen()" title="Plein écran (F)">
+        @if (isFullscreen()) {
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 2H2v3M8 2h3v3M8 11h3V8M5 11H2V8"/></svg>
+        } @else {
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 5V2h3M8 2h3v3M10 8v3H7M5 10H2V7"/></svg>
+        }
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── CORPS ── -->
+  <div class="pdf-body">
+
+    <!-- Loading élégant -->
+    @if (loading()) {
+      <div class="pdf-loading">
+        <div class="pdf-loading-ornament">
+          <div class="pdf-loading-line"></div>
+          <span class="pdf-loading-star">✦</span>
+          <div class="pdf-loading-line"></div>
+        </div>
+        <div class="pdf-loading-ring">
+          <div class="pdf-loading-ring-inner"></div>
+        </div>
+        <div class="pdf-loading-title">{{ pdfName() }}</div>
+        <div class="pdf-loading-sub">Chargement du manuscrit…</div>
+      </div>
+    }
+
+    @if (error()) {
+      <div class="pdf-error">⚠ {{ error() }}</div>
+    }
+
+    <!-- Flèche gauche -->
+    <button class="pdf-arrow pdf-arrow--left"
+            [class.hidden]="loading()"
+            (click)="prev()"
+            [disabled]="currentPair() === 0 || rendering()">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="currentColor"><path d="M14 4L8 11l6 7V4z"/></svg>
+    </button>
+
+    <!-- Panneau latéral gauche -->
+    <div class="pdf-side pdf-side--left" [class.hidden]="loading()">
+      <div class="pdf-side-star">✦</div>
+      <div class="pdf-side-vline"></div>
+      <div class="pdf-side-callig">وَصَلَّى اللَّهُ</div>
+      <div class="pdf-side-diamond"></div>
+      <div class="pdf-side-callig">عَلَى النَّبِيِّ</div>
+      <div class="pdf-side-vline"></div>
+      <div class="pdf-side-geo">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="24,3 45,13 45,35 24,45 3,35 3,13" fill="none" stroke="#d0a13b" stroke-width="0.7" opacity="0.4"/>
+          <polygon points="24,10 38,18 38,30 24,38 10,30 10,18" fill="none" stroke="#d0a13b" stroke-width="0.5" opacity="0.25"/>
+          <circle cx="24" cy="24" r="5" fill="none" stroke="#d0a13b" stroke-width="0.8" opacity="0.5"/>
+          <circle cx="24" cy="24" r="2" fill="#d0a13b" opacity="0.4"/>
+        </svg>
+      </div>
+      <div class="pdf-side-vline"></div>
+      <div class="pdf-side-star" style="animation-delay:1.5s">✦</div>
+    </div>
+
+    <!-- ══ LIVRE DOUBLE PAGE ══ -->
+    <div class="pdf-book" [class.invisible]="loading()">
+
+      <!-- Signature -->
+      <div class="pdf-book-sig">Diawartoulah Paris</div>
+
+      <!-- Titre du manuscrit -->
+      <div class="pdf-book-title">
+        <div class="pdf-book-title-ornament">
+          <div class="pdf-book-title-line"></div>
+          <span class="pdf-book-title-star">✦</span>
+          <div class="pdf-book-title-line"></div>
+        </div>
+        <div class="pdf-book-title-ar">{{ pdfNameFr() }}</div>
+      </div>
+
+      <!-- Cadre extérieur décoratif -->
+      <div class="pdf-book-frame">
+
+        <!-- Coins ornementaux -->
+        <div class="book-corner book-corner-tl"></div>
+        <div class="book-corner book-corner-tr"></div>
+        <div class="book-corner book-corner-bl"></div>
+        <div class="book-corner book-corner-br"></div>
+
+        <!-- Étoiles aux milieux des côtés -->
+        <div class="book-side-star book-side-star--top">✦</div>
+        <div class="book-side-star book-side-star--bottom">✦</div>
+
+        <!-- Pages côte à côte -->
+        <div class="pdf-spread">
+
+          <!-- Page gauche -->
+          <div class="pdf-page pdf-page--left">
+            <div class="pdf-page-inner">
+              <canvas #canvasLeft></canvas>
+            </div>
+            <div class="pdf-page-num">{{ leftPage() }}</div>
+          </div>
+
+          <!-- Reliure centrale -->
+          <div class="pdf-spine">
+            <div class="pdf-spine-top-star">✦</div>
+            <div class="pdf-spine-line"></div>
+            <div class="pdf-spine-mid">
+              <div class="pdf-spine-diamond"></div>
+            </div>
+            <div class="pdf-spine-line"></div>
+            <div class="pdf-spine-bottom-star">✦</div>
+          </div>
+
+          <!-- Page droite -->
+          <div class="pdf-page pdf-page--right">
+            <div class="pdf-page-inner">
+              <canvas #canvasRight></canvas>
+            </div>
+            @if (rightPage() <= totalPages()) {
+              <div class="pdf-page-num">{{ rightPage() }}</div>
+            }
+          </div>
+
+        </div>
+
+        <!-- Ligne dorée bas du cadre -->
+        <div class="book-bottom-line"></div>
+
+      </div><!-- /book-frame -->
+
+    </div><!-- /pdf-book -->
+
+    <!-- Panneau latéral droit -->
+    <div class="pdf-side pdf-side--right" [class.hidden]="loading()">
+      <div class="pdf-side-star">✦</div>
+      <div class="pdf-side-vline"></div>
+      <div class="pdf-side-callig">وَصَلَّى اللَّهُ</div>
+      <div class="pdf-side-diamond"></div>
+      <div class="pdf-side-callig">عَلَى النَّبِيِّ</div>
+      <div class="pdf-side-vline"></div>
+      <div class="pdf-side-geo">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="28" height="28" fill="none" stroke="#d0a13b" stroke-width="0.7" opacity="0.35" transform="rotate(45 24 24)"/>
+          <rect x="16" y="16" width="16" height="16" fill="none" stroke="#d0a13b" stroke-width="0.5" opacity="0.2" transform="rotate(45 24 24)"/>
+          <circle cx="24" cy="24" r="5" fill="none" stroke="#d0a13b" stroke-width="0.8" opacity="0.5"/>
+          <circle cx="24" cy="24" r="2" fill="#d0a13b" opacity="0.4"/>
+        </svg>
+      </div>
+      <div class="pdf-side-vline"></div>
+      <div class="pdf-side-star" style="animation-delay:2s">✦</div>
+    </div>
+
+    <!-- Flèche droite -->
+    <button class="pdf-arrow pdf-arrow--right"
+            [class.hidden]="loading()"
+            (click)="next()"
+            [disabled]="currentPair() >= totalPairs() - 1 || rendering()">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="currentColor"><path d="M8 4l6 7-6 7V4z"/></svg>
+    </button>
+
+  </div><!-- /pdf-body -->
+
+  <!-- ── BARRE DE CONTRÔLES ── -->
+  <div class="pdf-controls" [class.hidden]="loading()">
+
+    <button class="pdf-ctrl-btn" (click)="prev()" [disabled]="currentPair() === 0 || rendering()" title="Précédent (←)">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M9 2L4 7l5 5V2z"/></svg>
+    </button>
+
+    <!-- Chapelet pagination -->
+    <div class="pdf-pager">
+      @for (i of [].constructor(totalPairs()); track $index) {
+        <button class="pdf-bead"
+                [class.active]="$index === currentPair()"
+                (click)="goTo($index)"
+                [title]="'Pages ' + ($index*2+1) + '–' + ($index*2+2)">
+        </button>
+      }
+    </div>
+
+    <button class="pdf-ctrl-btn" (click)="next()" [disabled]="currentPair() >= totalPairs() - 1 || rendering()" title="Suivant (→)">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M5 2l5 5-5 5V2z"/></svg>
+    </button>
+
+    <div class="pdf-ctrl-sep"></div>
+    <span class="pdf-counter">{{ currentPair() + 1 }} / {{ totalPairs() }}</span>
+
+  </div>
+
+</div>

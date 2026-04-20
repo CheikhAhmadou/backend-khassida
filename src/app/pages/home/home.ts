@@ -1,10 +1,28 @@
 import { Component, OnInit, OnDestroy, signal, computed, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { Collection, Khassida } from '../../models/collection.model';
 import { ApiService } from '../../services/api';
 import { SlideshowComponent } from '../../components/slideshow/slideshow';
 import { SidebarComponent } from '../../components/sidebar/sidebar';
+
+export interface KourelPdf { filename: string; label: string; path: string; }
+export interface KourelCollection { name: string; pdfs: KourelPdf[]; }
+
+const KOUREL_DATA: KourelCollection[] = [
+  {
+    name: 'Kourel 4 Diawartoulah Paris',
+    pdfs: [
+      { filename: '_Bismillahi lezi.pdf',       label: 'Bismillahi Lezi',       path: 'kourel4/_Bismillahi lezi.pdf' },
+      { filename: '_Lam-yabdou-ar.pdf',         label: 'Lam Yabdou',            path: 'kourel4/_Lam-yabdou-ar.pdf' },
+      { filename: '_Madahtu-nabiyal.pdf',       label: 'Madahtu Nabiyal',       path: 'kourel4/_Madahtu-nabiyal.pdf' },
+      { filename: '_Madhu Nabiyil Muntaqa.pdf', label: 'Madhu Nabiyil Muntaqa', path: 'kourel4/_Madhu Nabiyil Muntaqa.pdf' },
+      { filename: '_Rafahnaa-ar.pdf',           label: 'Rafahnaa',              path: 'kourel4/_Rafahnaa-ar.pdf' },
+      { filename: '_Salaatu-Rahiimin-ar.pdf',   label: 'Salaatu Rahiimin',      path: 'kourel4/_Salaatu-Rahiimin-ar.pdf' },
+      { filename: '_Yaqiini.pdf',               label: 'Yaqiini',               path: 'kourel4/_Yaqiini.pdf' },
+    ],
+  },
+];
 
 @Component({
   selector: 'app-home',
@@ -14,7 +32,8 @@ import { SidebarComponent } from '../../components/sidebar/sidebar';
   styleUrl: './home.scss',
 })
 export class Home implements OnInit, OnDestroy {
-  readonly api = inject(ApiService);
+  readonly api    = inject(ApiService);
+  private  router = inject(Router);
 
   collections      = signal<Collection[]>([]);
   slides           = signal<Khassida[]>([]);
@@ -26,11 +45,15 @@ export class Home implements OnInit, OnDestroy {
 
   // ── Browser mode ──
   appMode                  = signal<'browser' | 'slideshow'>('browser');
-  browserView              = signal<'folders' | 'files'>('folders');
+  browserView              = signal<'folders' | 'files' | 'kourel' | 'kourel-pdfs'>('folders');
   browserOpenCollectionId  = signal<number | null>(null);
   browserKhassidas         = signal<Khassida[]>([]);
   browserKhassidaLoading   = signal(false);
   browserStartIndex        = signal(0);
+
+  // ── Kourel ──
+  readonly kourelCollections    = signal(KOUREL_DATA);
+  activeKourelCollection        = signal<KourelCollection | null>(null);
 
   browserOpenCollectionName = computed(() => {
     const id = this.browserOpenCollectionId();
@@ -78,6 +101,22 @@ export class Home implements OnInit, OnDestroy {
   backToFolders(): void {
     this.browserView.set('folders');
     this.browserKhassidas.set([]);
+    this.activeKourelCollection.set(null);
+  }
+
+  openKourel(): void {
+    this.browserView.set('kourel');
+  }
+
+  openKourelCollection(col: KourelCollection): void {
+    this.activeKourelCollection.set(col);
+    this.browserView.set('kourel-pdfs');
+  }
+
+  openKourelPdf(pdf: KourelPdf): void {
+    this.router.navigate(['/page'], {
+      queryParams: { pdf: pdf.path, name: pdf.label, back: '/' },
+    });
   }
 
   imageUrl(slide: Khassida): string {

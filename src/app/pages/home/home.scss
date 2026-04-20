@@ -643,3 +643,78 @@ $text-muted: rgba(245, 220, 160, 0.4);
   transition: all 0.15s;
   &:hover { background: rgba(208,161,59,0.2); }
 }
+
+/* ══ KOUREL ══ */
+.folder--kourel {
+  border-color: rgba(208,161,59,0.35) !important;
+  background: rgba(208,161,59,0.06) !important;
+  &:hover { background: rgba(208,161,59,0.14) !important; }
+}
+
+.folder-icon--kourel { color: $gold !important; }
+
+/* Liste PDFs d'un kourel */
+.kourel-pdf-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: clamp(12px, 2vw, 24px) clamp(16px, 4vw, 60px) clamp(24px, 4vh, 48px);
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.kourel-pdf-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: clamp(12px, 1.5vh, 18px) clamp(14px, 2vw, 22px);
+  background: rgba(208,161,59,0.04);
+  border: 1px solid rgba(208,161,59,0.16);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.18s;
+
+  &:hover {
+    background: rgba(208,161,59,0.1);
+    border-color: rgba(208,161,59,0.45);
+    transform: translateX(4px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3), 0 0 12px rgba(208,161,59,0.1);
+
+    .kourel-pdf-arrow { opacity: 1; transform: translateX(4px); color: $gold; }
+    .kourel-pdf-icon  { color: $gold; }
+  }
+}
+
+.kourel-pdf-num {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  color: rgba(208,161,59,0.35);
+  width: 22px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.kourel-pdf-icon {
+  width: 28px;
+  flex-shrink: 0;
+  color: rgba(208,161,59,0.45);
+  transition: color 0.18s;
+  svg { width: 100%; height: auto; }
+}
+
+.kourel-pdf-label {
+  flex: 1;
+  font-family: 'Cinzel', serif;
+  font-size: clamp(12px, 1.2vw, 16px);
+  color: rgba(245,220,160,0.88);
+  letter-spacing: 0.04em;
+}
+
+.kourel-pdf-arrow {
+  color: rgba(208,161,59,0.4);
+  opacity: 0.5;
+  transition: all 0.18s;
+  flex-shrink: 0;
+}

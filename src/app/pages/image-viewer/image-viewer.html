@@ -1,0 +1,110 @@
+<div class="iv-shell">
+
+  <div class="iv-bg-geo">
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <pattern id="geo-iv" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+          <polygon points="40,4 76,22 76,58 40,76 4,58 4,22" fill="none" stroke="#d0a13b" stroke-width="0.4" opacity="0.08"/>
+          <circle cx="40" cy="40" r="6" fill="none" stroke="#d0a13b" stroke-width="0.3" opacity="0.06"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#geo-iv)"/>
+    </svg>
+  </div>
+  <div class="iv-vignette"></div>
+
+  <!-- NAV -->
+  <nav class="iv-nav">
+    <button class="iv-nav-back" (click)="goBack()">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="currentColor"><path d="M9 2L4 7l5 5V2z"/></svg>
+      Retour
+    </button>
+    <div class="iv-nav-center">
+      <div class="iv-nav-title">{{ name }}</div>
+    </div>
+    <div class="iv-nav-logo">
+      <img src="logo-diawartoulah.gif" alt="Diawartoulah TV" class="iv-logo-img"/>
+      <span class="iv-logo-name">Diawartoulah Paris</span>
+    </div>
+  </nav>
+
+  <!-- BODY -->
+  <div class="iv-body">
+
+    <!-- LEFT SIDE PANEL -->
+    <div class="iv-side iv-side-left">
+      <div class="iv-side-star">✦</div>
+      <div class="iv-side-callig">بِسْمِ اللَّهِ</div>
+      <div class="iv-side-line"></div>
+      <svg class="iv-side-geo" viewBox="0 0 40 120" fill="none">
+        <polygon points="20,6 34,13 34,27 20,34 6,27 6,13" fill="none" stroke="#d0a13b" stroke-width="0.7" opacity="0.4"/>
+        <polygon points="20,46 34,53 34,67 20,74 6,67 6,53" fill="none" stroke="#d0a13b" stroke-width="0.7" opacity="0.4"/>
+        <polygon points="20,86 34,93 34,107 20,114 6,107 6,93" fill="none" stroke="#d0a13b" stroke-width="0.7" opacity="0.4"/>
+        <line x1="20" y1="34" x2="20" y2="46" stroke="#d0a13b" stroke-width="0.4" opacity="0.3"/>
+        <line x1="20" y1="74" x2="20" y2="86" stroke="#d0a13b" stroke-width="0.4" opacity="0.3"/>
+      </svg>
+      <div class="iv-side-line"></div>
+      <div class="iv-side-star">✦</div>
+    </div>
+
+    <!-- FRAME + ARROWS -->
+    <div class="iv-frame-wrap">
+
+      <button class="iv-arrow iv-arrow-left"  (click)="prev()" [class.iv-arrow-hidden]="!canPrev()">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="currentColor"><path d="M18 4L8 14l10 10V4z"/></svg>
+      </button>
+
+      <div class="iv-frame">
+        <div class="iv-frame-corner iv-fc-tl"></div>
+        <div class="iv-frame-corner iv-fc-tr"></div>
+        <div class="iv-frame-corner iv-fc-bl"></div>
+        <div class="iv-frame-corner iv-fc-br"></div>
+        <span class="iv-frame-star iv-frame-star--top">✦</span>
+        <span class="iv-frame-star iv-frame-star--bottom">✦</span>
+        <div class="iv-pages">
+          @if (rightPage()) {
+            <div class="iv-page-wrap">
+              <img class="iv-page" [src]="rightPage()!" [alt]="name + ' page 2'"/>
+            </div>
+          }
+          @if (leftPage()) {
+            <div class="iv-page-divider"></div>
+            <div class="iv-page-wrap">
+              <img class="iv-page" [src]="leftPage()!" [alt]="name + ' page 1'"/>
+            </div>
+          }
+        </div>
+      </div>
+
+      <button class="iv-arrow iv-arrow-right" (click)="next()" [class.iv-arrow-hidden]="!canNext()">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="currentColor"><path d="M10 4l10 10-10 10V4z"/></svg>
+      </button>
+
+    </div>
+
+    <!-- RIGHT SIDE PANEL -->
+    <div class="iv-side iv-side-right">
+      <div class="iv-side-star">✦</div>
+      <div class="iv-side-callig">الرَّحْمَنِ</div>
+      <div class="iv-side-line"></div>
+      <svg class="iv-side-geo" viewBox="0 0 40 120" fill="none">
+        <polygon points="20,6 34,13 34,27 20,34 6,27 6,13" fill="none" stroke="#d0a13b" stroke-width="0.7" opacity="0.4"/>
+        <polygon points="20,46 34,53 34,67 20,74 6,67 6,53" fill="none" stroke="#d0a13b" stroke-width="0.7" opacity="0.4"/>
+        <polygon points="20,86 34,93 34,107 20,114 6,107 6,93" fill="none" stroke="#d0a13b" stroke-width="0.7" opacity="0.4"/>
+        <line x1="20" y1="34" x2="20" y2="46" stroke="#d0a13b" stroke-width="0.4" opacity="0.3"/>
+        <line x1="20" y1="74" x2="20" y2="86" stroke="#d0a13b" stroke-width="0.4" opacity="0.3"/>
+      </svg>
+      <div class="iv-side-line"></div>
+      <div class="iv-side-star">✦</div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="iv-footer">
+    <div class="iv-footer-line"></div>
+    <span class="iv-page-label">{{ pageLabel() }}</span>
+    <div class="iv-footer-line"></div>
+  </div>
+
+</div>

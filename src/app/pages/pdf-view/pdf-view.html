@@ -18,10 +18,17 @@
   <!-- ── NAV ── -->
   <nav class="pdf-nav">
     <div class="pdf-nav-brand">
-      <a [routerLink]="backUrl()" class="pdf-nav-back">
-        <svg width="13" height="13" viewBox="0 0 14 14" fill="currentColor"><path d="M9 2L4 7l5 5V2z"/></svg>
-        Accueil
-      </a>
+      @if (embedded) {
+        <button class="pdf-nav-back" (click)="goBack()">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="currentColor"><path d="M9 2L4 7l5 5V2z"/></svg>
+          Retour
+        </button>
+      } @else {
+        <a [routerLink]="backUrl()" class="pdf-nav-back">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="currentColor"><path d="M9 2L4 7l5 5V2z"/></svg>
+          Accueil
+        </a>
+      }
       <div class="pdf-nav-sep">✦</div>
       <div class="pdf-nav-title">{{ pdfName() }}</div>
     </div>

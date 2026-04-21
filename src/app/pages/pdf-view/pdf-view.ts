@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, OnDestroy, AfterViewInit,
+  Component, AfterViewInit, OnDestroy, Input, Output, EventEmitter,
   ElementRef, ViewChild, signal, computed, HostListener, NgZone, inject, ChangeDetectorRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -18,6 +18,12 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 export class PdfViewComponent implements AfterViewInit, OnDestroy {
   @ViewChild('canvasLeft')  canvasLeft!:  ElementRef<HTMLCanvasElement>;
   @ViewChild('canvasRight') canvasRight!: ElementRef<HTMLCanvasElement>;
+
+  // Mode embarqué : inputs fournis par le parent
+  @Input() embeddedPdf  = '';
+  @Input() embeddedName = '';
+  @Input() embedded     = false;
+  @Output() backClicked = new EventEmitter<void>();
 
   private zone  = inject(NgZone);
   private cdr   = inject(ChangeDetectorRef);
@@ -41,34 +47,39 @@ export class PdfViewComponent implements AfterViewInit, OnDestroy {
   backUrl   = signal('/');
 
   ngAfterViewInit(): void {
-    const paramPdf  = this.route.snapshot.queryParamMap.get('pdf');
-    const paramName = this.route.snapshot.queryParamMap.get('name');
-    const paramBack = this.route.snapshot.queryParamMap.get('back');
-    if (paramPdf) {
-      this.pdfUrl.set(paramPdf);
-      if (paramName) {
-        this.pdfNameFr.set(paramName);
-        this.pdfName.set(paramName);
+    if (this.embedded && this.embeddedPdf) {
+      this.pdfUrl.set(this.embeddedPdf);
+      this.pdfNameFr.set(this.embeddedName);
+      this.pdfName.set(this.embeddedName);
+    } else {
+      const paramPdf  = this.route.snapshot.queryParamMap.get('pdf');
+      const paramName = this.route.snapshot.queryParamMap.get('name');
+      const paramBack = this.route.snapshot.queryParamMap.get('back');
+      if (paramPdf) {
+        this.pdfUrl.set(paramPdf);
+        if (paramName) { this.pdfNameFr.set(paramName); this.pdfName.set(paramName); }
+        if (paramBack) this.backUrl.set(paramBack);
       }
-      if (paramBack) this.backUrl.set(paramBack);
     }
     this.loadPdf();
   }
 
-  ngOnDestroy(): void {
-    this.pdf?.destroy();
-  }
+  ngOnDestroy(): void { this.pdf?.destroy(); }
 
   private async loadPdf(): Promise<void> {
+    this.loading.set(true);
+    this.error.set('');
+    this.currentPair.set(0);
+    this.totalPages.set(0);
     try {
+      this.pdf?.destroy();
       const task = pdfjsLib.getDocument(this.pdfUrl());
       this.pdf = await task.promise;
       this.zone.run(() => {
         this.totalPages.set(this.pdf!.numPages);
         this.loading.set(false);
-        this.cdr.detectChanges(); // force Angular to render canvases
+        this.cdr.detectChanges();
       });
-      // wait one frame so canvas elements are in the DOM
       await new Promise(r => setTimeout(r, 50));
       await this.renderPair(0);
     } catch (e: any) {
@@ -82,41 +93,35 @@ export class PdfViewComponent implements AfterViewInit, OnDestroy {
   private async renderPair(pairIndex: number): Promise<void> {
     if (!this.pdf || !this.canvasLeft || !this.canvasRight) return;
     this.zone.run(() => this.rendering.set(true));
-
-    const leftNum  = pairIndex * 2 + 1;
-    const rightNum = pairIndex * 2 + 2;
-
-    await this.renderPage(leftNum, this.canvasLeft.nativeElement);
-
-    if (rightNum <= this.totalPages()) {
-      await this.renderPage(rightNum, this.canvasRight.nativeElement);
+    await this.renderPage(pairIndex * 2 + 1, this.canvasLeft.nativeElement);
+    if (pairIndex * 2 + 2 <= this.totalPages()) {
+      await this.renderPage(pairIndex * 2 + 2, this.canvasRight.nativeElement);
     } else {
       this.clearCanvas(this.canvasRight.nativeElement);
     }
-
     this.zone.run(() => this.rendering.set(false));
   }
 
   private async renderPage(pageNum: number, canvas: HTMLCanvasElement): Promise<void> {
     if (!this.pdf) return;
-    const page      = await this.pdf.getPage(pageNum);
-    const body      = canvas.closest('.pdf-body') as HTMLElement | null;
-    const vw        = window.innerWidth;
-    const navH      = 42;
-    const ctrlH     = 42;
-    const spineW    = 28;
-    const framePad  = 8;
-    const titleH    = vw < 640 ? 60 : 80;
-    const sideW     = vw < 640 ? 0 : vw < 1024 ? 60 : vw >= 2560 ? 140 : vw >= 1920 ? 110 : 88;
-    const bodyW     = body ? body.clientWidth  : vw;
-    const bodyH     = body ? body.clientHeight : window.innerHeight - navH - ctrlH;
-    const availW    = (bodyW - spineW - framePad * 2 - sideW * 2) / 2;
-    const availH    = bodyH - framePad * 2 - titleH;
-    const dpr       = window.devicePixelRatio || 1;
+    const page     = await this.pdf.getPage(pageNum);
+    const body     = canvas.closest('.pdf-body') as HTMLElement | null;
+    const vw       = window.innerWidth;
+    const navH     = 42;
+    const ctrlH    = 42;
+    const spineW   = 28;
+    const framePad = 8;
+    const titleH   = vw < 640 ? 60 : 80;
+    const sideW    = vw < 640 ? 0 : vw < 1024 ? 60 : vw >= 2560 ? 140 : vw >= 1920 ? 110 : 88;
+    const bodyW    = body ? body.clientWidth  : vw;
+    const bodyH    = body ? body.clientHeight : window.innerHeight - navH - ctrlH;
+    const availW   = (bodyW - spineW - framePad * 2 - sideW * 2) / 2;
+    const availH   = bodyH - framePad * 2 - titleH;
+    const dpr      = window.devicePixelRatio || 1;
 
-    const vp0    = page.getViewport({ scale: 1 });
-    const scale  = Math.min((availW / vp0.width), (availH / vp0.height)) * dpr;
-    const vp     = page.getViewport({ scale });
+    const vp0   = page.getViewport({ scale: 1 });
+    const scale = Math.min(availW / vp0.width, availH / vp0.height) * dpr;
+    const vp    = page.getViewport({ scale });
 
     canvas.width  = vp.width;
     canvas.height = vp.height;
@@ -142,6 +147,10 @@ export class PdfViewComponent implements AfterViewInit, OnDestroy {
   async prev(): Promise<void> { await this.goTo(this.currentPair() - 1); }
   async next(): Promise<void> { await this.goTo(this.currentPair() + 1); }
 
+  goBack(): void {
+    if (this.embedded) this.backClicked.emit();
+  }
+
   toggleFullscreen(): void {
     if (!document.fullscreenElement) document.documentElement.requestFullscreen();
     else document.exitFullscreen();
@@ -158,12 +167,11 @@ export class PdfViewComponent implements AfterViewInit, OnDestroy {
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') this.next();
     if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   this.prev();
     if (e.key === 'f' || e.key === 'F') this.toggleFullscreen();
+    if (e.key === 'Escape' && this.embedded) this.backClicked.emit();
   }
 
   @HostListener('window:resize')
   onResize(): void {
-    if (!this.rendering()) {
-      setTimeout(() => this.renderPair(this.currentPair()), 100);
-    }
+    if (!this.rendering()) setTimeout(() => this.renderPair(this.currentPair()), 100);
   }
 }

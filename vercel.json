@@ -3,6 +3,10 @@
   "outputDirectory": "dist/khassida-art/browser",
   "framework": null,
   "rewrites": [
+    {
+      "source": "/kourel-files/:path*",
+      "destination": "https://backend-khassida-production.up.railway.app/kourel-files/:path*"
+    },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
